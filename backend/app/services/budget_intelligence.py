@@ -1,71 +1,62 @@
-from decimal import Decimal
-
-from app.models.project import Project
-
-
-def analyze_budget(project: Project) -> dict:
-    """
-    Analyze project budget health and detect
-    potential cost overrun risks.
-    """
-
-    approved_budget = project.approved_budget
-    revised_budget = (
+def analyze_budget(project):
+    approved_budget = float(project.approved_budget or 0)
+    revised_budget = float(
         project.revised_budget
         if project.revised_budget is not None
         else approved_budget
     )
+    expenditure = float(project.expenditure or 0)
 
-    expenditure = project.expenditure
-    progress = project.actual_progress
+    planned_progress = float(project.planned_progress or 0)
+    actual_progress = float(project.actual_progress or 0)
 
-    # Avoid division by zero
-    if revised_budget <= 0:
-        return {
-            "budget_utilization": 0,
-            "budget_status": "invalid_budget",
-            "budget_risk": "unknown",
-        }
+    budget_difference = revised_budget - approved_budget
 
-    budget_utilization = (
-        expenditure / revised_budget
-    ) * Decimal("100")
+    budget_change_percent = 0.0
 
-    # Compare spending with actual work completed
-    spending_progress_gap = (
-        budget_utilization - progress
-    )
+    if approved_budget > 0:
+        budget_change_percent = (
+            budget_difference / approved_budget
+        ) * 100
 
-    # Budget status
-    if expenditure > revised_budget:
-        budget_status = "over_budget"
-        budget_risk = "critical"
+    spending_progress_gap = actual_progress - planned_progress
 
-    elif spending_progress_gap > Decimal("30"):
-        budget_status = "high_spending"
+    projected_expenditure = expenditure
+
+    if actual_progress > 0:
+        projected_expenditure = (
+            expenditure / actual_progress
+        ) * 100
+
+    budget_risk = "low"
+
+    if projected_expenditure > revised_budget:
         budget_risk = "high"
 
-    elif spending_progress_gap > Decimal("15"):
-        budget_status = "spending_ahead_of_progress"
+    elif projected_expenditure > revised_budget * 0.9:
         budget_risk = "medium"
 
-    else:
-        budget_status = "healthy"
-        budget_risk = "low"
-
     return {
-        "approved_budget": float(approved_budget),
-        "revised_budget": float(revised_budget),
-        "expenditure": float(expenditure),
-        "budget_utilization_percent": round(
-            float(budget_utilization),
+        "approved_budget": approved_budget,
+        "revised_budget": revised_budget,
+        "expenditure": expenditure,
+        "budget_difference": round(
+            budget_difference,
             2,
         ),
-        "actual_progress_percent": float(progress),
+        "budget_change_percent": round(
+            budget_change_percent,
+            2,
+        ),
+        "planned_progress_percent": planned_progress,
+        "actual_progress_percent": actual_progress,
         "spending_progress_gap": round(
-            float(spending_progress_gap),
+            spending_progress_gap,
             2,
         ),
-        "budget_status": budget_status,
+        "projected_expenditure": round(
+            projected_expenditure,
+            2,
+        ),
         "budget_risk": budget_risk,
     }

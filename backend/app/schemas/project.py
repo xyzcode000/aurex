@@ -4,6 +4,10 @@ from decimal import Decimal
 from pydantic import BaseModel, ConfigDict, Field
 
 
+# -------------------------------------------------
+# PROJECT BASE
+# -------------------------------------------------
+
 class ProjectBase(BaseModel):
     name: str = Field(
         min_length=2,
@@ -59,9 +63,17 @@ class ProjectBase(BaseModel):
     )
 
 
+# -------------------------------------------------
+# CREATE PROJECT
+# -------------------------------------------------
+
 class ProjectCreate(ProjectBase):
     pass
 
+
+# -------------------------------------------------
+# UPDATE PROJECT
+# -------------------------------------------------
 
 class ProjectUpdate(BaseModel):
     name: str | None = Field(
@@ -120,6 +132,10 @@ class ProjectUpdate(BaseModel):
     )
 
 
+# -------------------------------------------------
+# PROJECT RESPONSE
+# -------------------------------------------------
+
 class ProjectResponse(ProjectBase):
     id: int
 
@@ -128,4 +144,35 @@ class ProjectResponse(ProjectBase):
 
     model_config = ConfigDict(
         from_attributes=True,
+    )
+
+
+# -------------------------------------------------
+# AUREX SCENARIO SIMULATION REQUEST
+# -------------------------------------------------
+
+class ScenarioRequest(BaseModel):
+    """
+    Input values for the Aurex Scenario Simulation Engine.
+    """
+
+    budget_change_percent: float = Field(
+        default=0,
+        ge=-100,
+        le=100,
+        description="Percentage change in approved budget",
+    )
+
+    delay_days: int = Field(
+        default=0,
+        ge=0,
+        le=3650,
+        description="Number of days to add as project delay",
+    )
+
+    progress_change_percent: float = Field(
+        default=0,
+        ge=-100,
+        le=100,
+        description="Percentage change in actual project progress",
     )
