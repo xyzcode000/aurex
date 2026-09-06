@@ -1,196 +1,97 @@
-from datetime import date, timedelta
+from datetime import date
 
 
-def predict_completion_date(
+def analyze_timeline(
     planned_start_date: date,
     planned_end_date: date,
     actual_start_date: date | None,
+    actual_end_date: date | None,
+    planned_progress: float,
     actual_progress: float,
 ):
-    """
-    Predict the expected completion date of a project
-    using current progress and elapsed project time.
-    """
+    # -----------------------------------------
+    # PROGRESS ANALYSIS
+    # -----------------------------------------
 
-    today = date.today()
+    progress_gap = planned_progress - actual_progress
 
-    # -------------------------------------------------
-    # VALIDATION
-    # -------------------------------------------------
+    if progress_gap <= 0:
+        progress_status = "on_track"
+    elif progress_gap <= 10:
+        progress_status = "slightly_delayed"
+    elif progress_gap <= 25:
+        progress_status = "delayed"
+    else:
+        progress_status = "critically_delayed"
 
-    if actual_start_date is None:
-        return {
-            "prediction_status": "insufficient_data",
-            "predicted_completion_date": None,
-            "predicted_delay_days": None,
-            "prediction_message": (
-                "Actual start date is required to "
-                "predict project completion."
-            ),
-        }
+    # -----------------------------------------
+    # DATE ANALYSIS
+    # -----------------------------------------
 
-    if actual_progress <= 0:
-        return {
-            "prediction_status": "insufficient_data",
-            "predicted_completion_date": None,
-            "predicted_delay_days": None,
-            "prediction_message": (
-                "Actual progress must be greater than "
-                "0% to predict project completion."
-            ),
-        }
-
-    if actual_progress >= 100:
-        return {
-            "prediction_status": "completed",
-            "predicted_completion_date": today,
-            "predicted_delay_days": 0,
-            "prediction_message": (
-                "Project progress indicates that the "
-                "project is complete."
-            ),
-        }
-
-    # -------------------------------------------------
-    # PROJECT DURATION
-    # -------------------------------------------------
-
-    elapsed_days = (
-        today - actual_start_date
+    total_planned_days = (
+        planned_end_date - planned_start_date
     ).days
 
-    if elapsed_days <= 0:
-        elapsed_days = 1
+    if actual_start_date is not None:
+        elapsed_days = (
+            date.today() - actual_start_date
+        ).days
+    else:
+        elapsed_days = 0
 
-    # -------------------------------------------------
-    # PROGRESS RATE
-    # -------------------------------------------------
-
-    progress_per_day = (
-        actual_progress / elapsed_days
-    )
-
-    if progress_per_day <= 0:
-        return {
-            "prediction_status": "insufficient_data",
-            "predicted_completion_date": None,
-            "predicted_delay_days": None,
-            "prediction_message": (
-                "Current progress rate is insufficient "
-                "for a reliable completion prediction."
-            ),
-        }
-
-    # -------------------------------------------------
-    # REMAINING PROGRESS
-    # -------------------------------------------------
-
-    remaining_progress = 100 - actual_progress
-
-    estimated_remaining_days = (
-        remaining_progress / progress_per_day
-    )
-
-    estimated_remaining_days = round(
-        estimated_remaining_days
-    )
-
-    # -------------------------------------------------
-    # PREDICTED COMPLETION
-    # -------------------------------------------------
-
-    predicted_completion_date = (
-        today +
-        timedelta(
-            days=estimated_remaining_days
-        )
-    )
-
-    # -------------------------------------------------
-    # PREDICTED DELAY
-    # -------------------------------------------------
-
-    predicted_delay_days = (
-        predicted_completion_date -
-        planned_end_date
+    remaining_days = (
+        planned_end_date - date.today()
     ).days
 
-    if predicted_delay_days < 0:
-        predicted_delay_days = 0
+    # -----------------------------------------
+    # DELAY ANALYSIS
+    # -----------------------------------------
 
-    # -------------------------------------------------
-    # PREDICTION STATUS
-    # -------------------------------------------------
+    delay_days = 0
 
-    if predicted_delay_days == 0:
-        prediction_status = "on_track"
+    if actual_end_date is not None:
+        delay_days = (
+            actual_end_date - planned_end_date
+        ).days
 
-    elif predicted_delay_days <= 30:
-        prediction_status = "slightly_delayed"
+        if delay_days < 0:
+            delay_days = 0
 
-    elif predicted_delay_days <= 90:
-        prediction_status = "delayed"
+    # -----------------------------------------
+    # TIMELINE RISK
+    # -----------------------------------------
 
-    else:
-        prediction_status = "critically_delayed"
+    if progress_gap <= 0:
+        timeline_risk = "low"
 
-    # -------------------------------------------------
-    # PREDICTION MESSAGE
-    # -------------------------------------------------
+    elif progress_gap <= 10:
+        timeline_risk = "medium"
 
-    if prediction_status == "on_track":
-        prediction_message = (
-            "Current progress indicates that the "
-            "project is expected to finish within "
-            "the planned timeline."
-        )
-
-    elif prediction_status == "slightly_delayed":
-        prediction_message = (
-            "The project is predicted to experience "
-            "a minor completion delay. Monitoring "
-            "is recommended."
-        )
-
-    elif prediction_status == "delayed":
-        prediction_message = (
-            "The project is predicted to exceed its "
-            "planned completion date. Corrective "
-            "timeline action is recommended."
-        )
+    elif progress_gap <= 25:
+        timeline_risk = "high"
 
     else:
-        prediction_message = (
-            "The project is predicted to experience "
-            "a critical completion delay. Immediate "
-            "management intervention is recommended."
-        )
+        timeline_risk = "critical"
 
-    # -------------------------------------------------
-    # RETURN AUREX PREDICTION
-    # -------------------------------------------------
+    # -----------------------------------------
+    # RETURN AUREX INTELLIGENCE
+    # -----------------------------------------
 
     return {
         "planned_start_date": planned_start_date,
         "planned_end_date": planned_end_date,
         "actual_start_date": actual_start_date,
-        "actual_progress_percent": round(
-            actual_progress,
-            2,
-        ),
-        "progress_per_day_percent": round(
-            progress_per_day,
-            4,
-        ),
-        "estimated_remaining_days": (
-            estimated_remaining_days
-        ),
-        "predicted_completion_date": (
-            predicted_completion_date
-        ),
-        "predicted_delay_days": (
-            predicted_delay_days
-        ),
-        "prediction_status": prediction_status,
-        "prediction_message": prediction_message,
+        "actual_end_date": actual_end_date,
+
+        "total_planned_days": total_planned_days,
+        "elapsed_days": elapsed_days,
+        "remaining_days": remaining_days,
+
+        "planned_progress_percent": planned_progress,
+        "actual_progress_percent": actual_progress,
+        "progress_gap_percent": progress_gap,
+
+        "progress_status": progress_status,
+        "delay_days": delay_days,
+        "timeline_risk": timeline_risk,
     }

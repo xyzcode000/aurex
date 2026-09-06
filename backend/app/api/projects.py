@@ -25,6 +25,8 @@ from app.services.scenario_intelligence import simulate_scenario
 from app.services.predictive_intelligence import predict_final_cost
 from app.services.timeline_prediction import predict_completion_date
 from app.services.early_warning import generate_early_warning
+from app.services.investigation_engine import investigate_project
+from app.services.unified_intelligence import generate_unified_intelligence
 
 
 router = APIRouter(
@@ -263,6 +265,69 @@ def get_early_warning(
         )
 
     return generate_early_warning(project)
+
+
+# -------------------------------------------------
+# AUREX INVESTIGATION & ROOT-CAUSE ENGINE
+# -------------------------------------------------
+
+@router.get(
+    "/{project_id}/intelligence/investigation",
+)
+def get_project_investigation(
+    project_id: int,
+    db: Session = Depends(get_db),
+):
+    project = get_project_by_id(
+        db=db,
+        project_id=project_id,
+    )
+
+    if project is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Project not found",
+        )
+
+    return investigate_project(project)
+
+
+# -------------------------------------------------
+# AUREX UNIFIED INTELLIGENCE ENGINE
+# -------------------------------------------------
+#
+# This is the MASTER AUREX intelligence endpoint.
+#
+# It combines:
+# Budget
+# Timeline
+# Risk
+# Cost Prediction
+# Timeline Prediction
+# Early Warning
+# Investigation
+#
+# -------------------------------------------------
+
+@router.get(
+    "/{project_id}/intelligence",
+)
+def get_unified_intelligence(
+    project_id: int,
+    db: Session = Depends(get_db),
+):
+    project = get_project_by_id(
+        db=db,
+        project_id=project_id,
+    )
+
+    if project is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Project not found",
+        )
+
+    return generate_unified_intelligence(project)
 
 
 # -------------------------------------------------
