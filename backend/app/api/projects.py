@@ -415,4 +415,4 @@ def delete_existing_project(
     delete_project(
         db=db,
         project=project,
-    )
+    )   
