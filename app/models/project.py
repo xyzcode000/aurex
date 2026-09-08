@@ -11,6 +11,8 @@ from app.db.database import Base
 
 if TYPE_CHECKING:
     from app.models.financial_record import FinancialRecord
+    from app.models.progress_record import ProgressRecord
+    from app.models.milestone import Milestone
 
 
 class Project(Base):
@@ -140,4 +142,16 @@ class Project(Base):
         "FinancialRecord",
         back_populates="project",
         cascade="all, delete-orphan"
+    )
+
+    progress_records: Mapped[list["ProgressRecord"]] = relationship(
+    "ProgressRecord",
+    back_populates="project",
+    cascade="all, delete-orphan"
+    )
+    
+    milestones: Mapped[list["Milestone"]] = relationship(
+    "Milestone",
+    back_populates="project",
+    cascade="all, delete-orphan"
     )
