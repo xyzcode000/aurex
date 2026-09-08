@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 
-from app.db.database import Base, engine
+
 from app.models.project import Project
 from app.models.financial_record import FinancialRecord
 from app.models.progress_record import ProgressRecord
@@ -9,7 +9,7 @@ from app.models.milestone import Milestone
 from app.routers.project import router as project_router
 
 
-Base.metadata.create_all(bind=engine)
+
 
 
 app = FastAPI(
