@@ -6,6 +6,20 @@ from app.services.timeline_prediction import predict_completion_date
 
 
 def generate_early_warning(project):
+    """
+    Aurex Early Warning Engine.
+
+    Combines current intelligence and predictive intelligence
+    to identify conditions that require management attention.
+
+    Separates:
+    - Financial risk
+    - Reported milestone risk
+    - Calendar schedule risk
+    - Confirmed delay
+    - Predicted completion risk
+    """
+
     # ---------------------------------------------------------
     # 1. CORE INTELLIGENCE
     # ---------------------------------------------------------
@@ -43,20 +57,27 @@ def generate_early_warning(project):
     # 3. BUDGET WARNINGS
     # ---------------------------------------------------------
 
-    budget_risk = budget_result.get("budget_risk", "low")
+    budget_risk = risk_result.get(
+        "budget_risk",
+        budget_result.get("budget_risk", "low"),
+    )
 
     if budget_risk == "high":
+
         warnings.append(
-            "High budget risk detected."
+            "High financial risk detected."
         )
+
         recommendations.append(
             "Immediate financial review is recommended."
         )
 
     elif budget_risk == "medium":
+
         warnings.append(
-            "Moderate budget risk detected."
+            "Moderate financial risk detected."
         )
+
         recommendations.append(
             "Monitor expenditure and budget utilization closely."
         )
@@ -74,6 +95,7 @@ def generate_early_warning(project):
     )
 
     if prediction_status == "critical":
+
         warnings.append(
             f"Projected final cost indicates a critical "
             f"budget overrun of {projected_overrun_percent}%."
@@ -85,6 +107,7 @@ def generate_early_warning(project):
         )
 
     elif prediction_status == "high":
+
         warnings.append(
             f"Projected final cost indicates a significant "
             f"budget overrun of {projected_overrun_percent}%."
@@ -95,6 +118,7 @@ def generate_early_warning(project):
         )
 
     elif prediction_status == "medium":
+
         warnings.append(
             "Projected final cost is above the revised budget."
         )
@@ -104,48 +128,55 @@ def generate_early_warning(project):
         )
 
     # ---------------------------------------------------------
-    # 5. CURRENT TIMELINE / EXECUTION WARNINGS
+    # 5. REPORTED MILESTONE RISK
     # ---------------------------------------------------------
 
-    timeline_risk = timeline_result.get(
-        "timeline_risk",
-        "low"
+    milestone_risk = risk_result.get(
+        "milestone_risk",
+        "low",
     )
 
     reported_progress_gap = float(
-        timeline_result.get(
+        risk_result.get(
             "progress_gap_percent",
-            0
+            timeline_result.get(
+                "progress_gap_percent",
+                0,
+            ),
         )
     )
 
-    if timeline_risk == "critical":
+    if milestone_risk == "critical":
+
         warnings.append(
-            "Critical timeline execution risk detected."
+            "Critical reported milestone execution risk detected."
         )
 
         recommendations.append(
-            "Immediate project schedule intervention "
-            "is recommended."
+            "Immediate review of milestone execution "
+            "and project delivery is recommended."
         )
 
-    elif timeline_risk == "high":
+    elif milestone_risk == "high":
+
         warnings.append(
-            "High timeline execution risk detected."
+            "High reported milestone execution risk detected."
         )
 
         recommendations.append(
-            "Project execution and milestone progress "
+            "Project milestones and execution performance "
             "should be closely monitored."
         )
 
-    elif timeline_risk == "medium":
+    elif milestone_risk == "medium":
+
         warnings.append(
-            "Moderate timeline execution risk detected."
+            "Moderate reported milestone execution risk detected."
         )
 
         recommendations.append(
-            "Monitor project milestones and progress."
+            "Monitor milestone completion and investigate "
+            "emerging execution issues."
         )
 
     # ---------------------------------------------------------
@@ -153,6 +184,7 @@ def generate_early_warning(project):
     # ---------------------------------------------------------
 
     if reported_progress_gap >= 25:
+
         warnings.append(
             f"Critical reported progress gap detected: "
             f"{reported_progress_gap}%."
@@ -164,6 +196,7 @@ def generate_early_warning(project):
         )
 
     elif reported_progress_gap >= 15:
+
         warnings.append(
             f"Significant reported progress gap detected: "
             f"{reported_progress_gap}%."
@@ -171,10 +204,11 @@ def generate_early_warning(project):
 
         recommendations.append(
             "Management should investigate causes "
-            "of execution slowdown."
+            "of the reported execution slowdown."
         )
 
     elif reported_progress_gap >= 5:
+
         warnings.append(
             f"Minor reported progress gap detected: "
             f"{reported_progress_gap}%."
@@ -184,22 +218,30 @@ def generate_early_warning(project):
     # 7. CALENDAR-BASED SCHEDULE INTELLIGENCE
     # ---------------------------------------------------------
 
+    calendar_schedule_risk = risk_result.get(
+        "calendar_schedule_risk",
+        "low",
+    )
+
+    calendar_status = risk_result.get(
+        "calendar_schedule_status",
+        "unknown",
+    )
+
     calendar_difference = float(
-        timeline_result.get(
+        risk_result.get(
             "calendar_progress_difference_percent",
-            0
+            timeline_result.get(
+                "calendar_progress_difference_percent",
+                0,
+            ),
         )
     )
 
-    calendar_status = timeline_result.get(
-        "calendar_schedule_status",
-        "unknown"
-    )
+    if calendar_schedule_risk == "critical":
 
-    if calendar_status == "critically_delayed":
         warnings.append(
-            "Calendar-based schedule analysis indicates "
-            "critical execution delay."
+            "Critical calendar-based schedule risk detected."
         )
 
         recommendations.append(
@@ -207,40 +249,41 @@ def generate_early_warning(project):
             "is recommended."
         )
 
-    elif calendar_status == "delayed":
+    elif calendar_schedule_risk == "high":
+
         warnings.append(
-            "Calendar-based schedule analysis indicates "
-            "project execution delay."
+            "High calendar-based schedule risk detected."
         )
 
         recommendations.append(
-            "Review current execution rate and "
-            "schedule recovery options."
+            "Review current execution rate, schedule "
+            "dependencies and recovery options."
         )
 
-    elif calendar_status == "slightly_delayed":
+    elif calendar_schedule_risk == "medium":
+
         warnings.append(
-            "Calendar-based schedule analysis indicates "
-            "minor schedule pressure."
+            "Moderate calendar-based schedule pressure detected."
+        )
+
+        recommendations.append(
+            "Monitor the current execution rate and "
+            "schedule performance."
         )
 
     # ---------------------------------------------------------
     # 8. CONFIRMED ACTUAL DELAY
     # ---------------------------------------------------------
-    # IMPORTANT:
-    # delay_days only represents confirmed delay based
-    # on an actual completion date.
-    #
-    # A value of 0 does NOT mean there is no timeline risk.
 
     confirmed_delay_days = int(
         timeline_result.get(
             "delay_days",
-            0
+            0,
         )
     )
 
     if confirmed_delay_days > 0:
+
         warnings.append(
             f"Confirmed project completion delay detected: "
             f"{confirmed_delay_days} days."
@@ -297,17 +340,15 @@ def generate_early_warning(project):
         )
 
     # ---------------------------------------------------------
-    # 10. IMPORTANT POSITIVE INTELLIGENCE
+    # 10. POSITIVE / CONFLICTING SCHEDULE INTELLIGENCE
     # ---------------------------------------------------------
-
-    # The project may be behind reported milestones but
-    # still be ahead of the calendar-based schedule.
 
     if (
         reported_progress_gap > 0
         and calendar_difference > 0
         and timeline_prediction_status == "on_track"
     ):
+
         warnings.append(
             f"Project is {reported_progress_gap}% behind its "
             f"reported milestone plan, but calendar-based "
@@ -327,7 +368,7 @@ def generate_early_warning(project):
     risk_score = float(
         risk_result.get(
             "overall_risk_score",
-            0
+            0,
         )
     )
 
@@ -337,6 +378,7 @@ def generate_early_warning(project):
         or timeline_prediction_status == "critically_delayed"
         or confirmed_delay_days > 90
     ):
+
         overall_status = "critical"
         priority = "immediate_action"
 
@@ -346,6 +388,7 @@ def generate_early_warning(project):
         or timeline_prediction_status == "delayed"
         or confirmed_delay_days > 30
     ):
+
         overall_status = "high"
         priority = "urgent_attention"
 
@@ -355,10 +398,12 @@ def generate_early_warning(project):
         or timeline_prediction_status == "slightly_delayed"
         or confirmed_delay_days > 0
     ):
+
         overall_status = "medium"
         priority = "monitor_closely"
 
     else:
+
         overall_status = "low"
         priority = "routine_monitoring"
 
@@ -400,28 +445,17 @@ def generate_early_warning(project):
 
     return {
         "project_id": project.id,
-
         "overall_status": overall_status,
-
         "priority": priority,
-
         "risk_score": risk_score,
-
         "warnings": warnings,
-
         "recommendations": recommendations,
-
         "executive_summary": executive_summary,
-
         "intelligence": {
             "budget": budget_result,
-
             "timeline": timeline_result,
-
             "risk": risk_result,
-
             "cost_prediction": cost_prediction,
-
             "timeline_prediction": timeline_prediction,
         },
     }
