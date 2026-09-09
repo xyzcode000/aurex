@@ -2,6 +2,13 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+from app.schemas.progress_record import ProgressRecordCreate, ProgressRecordResponse
+from app.services.progress_record_service import create_progress_record
+from app.schemas.milestone import MilestoneCreate, MilestoneResponse
+from app.services.milestone_service import (
+    create_milestone,
+    get_milestones
+)
 from app.db.database import get_db
 from app.schemas.project import ProjectCreate, ProjectResponse
 from app.schemas.financial_record import (
@@ -86,3 +93,70 @@ def add_financial_record(
         )
 
     return record
+
+@router.post(
+    "/{project_id}/progress",
+    response_model=ProgressRecordResponse
+)
+def add_progress_record(
+    project_id: str,
+    record_data: ProgressRecordCreate,
+    db: Session = Depends(get_db)
+):
+    record = create_progress_record(
+        db,
+        project_id,
+        record_data
+    )
+
+    if not record:
+        raise HTTPException(
+            status_code=404,
+            detail="Project not found"
+        )
+
+    return record
+
+@router.post(
+    "/{project_id}/milestones",
+    response_model=MilestoneResponse
+)
+def add_milestone(
+    project_id: str,
+    milestone_data: MilestoneCreate,
+    db: Session = Depends(get_db)
+):
+    milestone = create_milestone(
+        db,
+        project_id,
+        milestone_data
+    )
+
+    if not milestone:
+        raise HTTPException(
+            status_code=404,
+            detail="Project not found"
+        )
+
+    return milestone
+
+@router.get(
+    "/{project_id}/milestones",
+    response_model=list[MilestoneResponse]
+)
+def list_milestones(
+    project_id: str,
+    db: Session = Depends(get_db)
+):
+    milestones = get_milestones(
+        db,
+        project_id
+    )
+
+    if milestones is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Project not found"
+        )
+
+    return milestones
