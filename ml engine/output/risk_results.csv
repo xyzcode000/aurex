@@ -1,0 +1,6 @@
+project_id,project_name,progress_gap,cost_overrun_pct,spending_pct,spending_vs_progress,risk_score,risk_level,anomaly_status,risk_reasons
+P001,Highway Project,18,10.0,68.18181818181817,16.181818181818173,63.27,MEDIUM,NORMAL,Project is behind planned progress; Project has significant cost overrun; Spending is high compared with physical progress
+P002,Bridge Project,3,0.0,40.0,-2.0,4.0,LOW,NORMAL,No major risk indicator detected
+P003,Water Project,25,18.75,73.68421052631578,18.68421052631578,89.48,HIGH,ANOMALY,Project is behind planned progress; Project has significant cost overrun; Spending is high compared with physical progress
+P004,Road Project,1,8.333333333333332,30.76923076923077,-3.23076923076923,13.83,LOW,NORMAL,No major risk indicator detected
+P005,Power Project,3,8.333333333333332,76.92307692307693,4.923076923076934,23.88,LOW,NORMAL,No major risk indicator detected

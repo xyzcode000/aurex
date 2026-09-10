@@ -3,26 +3,57 @@ import pandas as pd
 # Load project data
 data = pd.read_csv("data/projects.csv")
 
-# Calculate how far each project is behind schedule
-data["progress_gap"] = data["planned_progress"] - data["actual_progress"]
 
-# Give a simple risk level
-def get_risk(gap):
-    if gap >= 15:
-        return "HIGH"
-    elif gap >= 5:
-        return "MEDIUM"
-    else:
-        return "LOW"
+# ==========================================
+# 1. PROJECT PROGRESS ANALYSIS
+# ==========================================
 
-data["risk_level"] = data["progress_gap"].apply(get_risk)
+data["progress_gap"] = (
+    data["planned_progress"] - data["actual_progress"]
+)
 
-# Show the result
-print(data[[
-    "project_id",
-    "project_name",
-    "planned_progress",
-    "actual_progress",
-    "progress_gap",
-    "risk_level"
-]])
+
+# ==========================================
+# 2. COST ANALYSIS
+# ==========================================
+
+data["cost_overrun_pct"] = (
+    (data["revised_cost"] - data["approved_cost"])
+    / data["approved_cost"]
+) * 100
+
+
+# ==========================================
+# 3. SPENDING ANALYSIS
+# ==========================================
+
+data["spending_pct"] = (
+    data["actual_expenditure"]
+    / data["revised_cost"]
+) * 100
+
+
+data["spending_vs_progress"] = (
+    data["spending_pct"]
+    - data["actual_progress"]
+)
+
+
+# ==========================================
+# 4. SHOW ANALYSIS
+# ==========================================
+
+print("\n========== PROJECT RISK ANALYSIS ==========\n")
+
+print(
+    data[
+        [
+            "project_id",
+            "project_name",
+            "progress_gap",
+            "cost_overrun_pct",
+            "spending_pct",
+            "spending_vs_progress"
+        ]
+    ].to_string(index=False)
+)
