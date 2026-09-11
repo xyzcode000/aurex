@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from uuid import UUID, uuid4
 from typing import TYPE_CHECKING
 
@@ -134,8 +134,9 @@ class Project(Base):
     )
 
     created_at: Mapped[datetime] = mapped_column(
-        DateTime,
-        default=datetime.utcnow
+    DateTime,
+    default=lambda: datetime.now(timezone.utc)
+
     )
 
     financial_records: Mapped[list["FinancialRecord"]] = relationship(
