@@ -1,5 +1,10 @@
+from typing import Callable
+
 from fastapi import Depends, HTTPException, status
-from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from fastapi.security import (
+    HTTPAuthorizationCredentials,
+    HTTPBearer,
+)
 from sqlalchemy.orm import Session
 
 from app.core.security import decode_access_token
@@ -17,34 +22,36 @@ security = HTTPBearer(
 
 
 # =========================================================
-# CURRENT USER
+# CURRENT AUTHENTICATED USER
 # =========================================================
 
 def get_current_user(
-    credentials: HTTPAuthorizationCredentials | None = Depends(security),
+    credentials: HTTPAuthorizationCredentials | None = Depends(
+        security
+    ),
     db: Session = Depends(get_db),
 ) -> User:
     """
-    Authenticate the current request using a JWT Bearer token.
+    Authenticate the current request using a JWT.
 
     Flow:
         Request
           ↓
-        Bearer token
+        Bearer Token
           ↓
         Decode JWT
           ↓
-        Extract user ID
+        Extract User ID
           ↓
-        Find user in database
+        Find User
           ↓
-        Verify account is active
+        Check Account Status
           ↓
-        Allow request
+        Authenticated User
     """
 
     # -----------------------------------------------------
-    # Check whether Authorization header exists
+    # AUTHORIZATION HEADER
     # -----------------------------------------------------
 
     if credentials is None:
@@ -59,7 +66,7 @@ def get_current_user(
     token = credentials.credentials
 
     # -----------------------------------------------------
-    # Decode JWT
+    # DECODE JWT
     # -----------------------------------------------------
 
     payload = decode_access_token(token)
@@ -74,7 +81,7 @@ def get_current_user(
         )
 
     # -----------------------------------------------------
-    # Extract user ID
+    # EXTRACT USER ID
     # -----------------------------------------------------
 
     user_id = payload.get("sub")
@@ -90,6 +97,7 @@ def get_current_user(
 
     try:
         user_id = int(user_id)
+
     except (TypeError, ValueError):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -100,7 +108,7 @@ def get_current_user(
         )
 
     # -----------------------------------------------------
-    # Find user in database
+    # FIND USER
     # -----------------------------------------------------
 
     user = (
@@ -119,7 +127,7 @@ def get_current_user(
         )
 
     # -----------------------------------------------------
-    # Check account status
+    # CHECK ACCOUNT STATUS
     # -----------------------------------------------------
 
     if not user.is_active:
@@ -129,3 +137,45 @@ def get_current_user(
         )
 
     return user
+
+
+# =========================================================
+# ROLE-BASED AUTHORIZATION
+# =========================================================
+
+def require_roles(*allowed_roles: str) -> Callable:
+    """
+    Creates a reusable role authorization dependency.
+
+    Examples:
+
+        Depends(require_roles("admin"))
+
+    or:
+
+        Depends(
+            require_roles(
+                "admin",
+                "project_manager",
+            )
+        )
+    """
+
+    def role_checker(
+        current_user: User = Depends(
+            get_current_user
+        ),
+    ) -> User:
+
+        if current_user.role not in allowed_roles:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=(
+                    "You do not have permission "
+                    "to perform this action."
+                ),
+            )
+
+        return current_user
+
+    return role_checker
