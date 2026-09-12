@@ -3,7 +3,10 @@ from sqlalchemy.orm import Session
 
 from app.db.session import get_db
 
-from app.core.dependencies import get_current_user
+from app.core.dependencies import (
+    get_current_user,
+    require_roles,
+)
 
 from app.schemas.project import (
     ProjectCreate,
@@ -103,6 +106,14 @@ def validate_timeline_data(project):
     "",
     response_model=ProjectResponse,
     status_code=status.HTTP_201_CREATED,
+    dependencies=[
+        Depends(
+            require_roles(
+                "admin",
+                "project_manager",
+            )
+        )
+    ],
 )
 def create_new_project(
     project_data: ProjectCreate,
@@ -425,6 +436,14 @@ def read_project(
 @router.put(
     "/{project_id}",
     response_model=ProjectResponse,
+    dependencies=[
+        Depends(
+            require_roles(
+                "admin",
+                "project_manager",
+            )
+        )
+    ],
 )
 def update_existing_project(
     project_data: ProjectUpdate,
@@ -455,6 +474,11 @@ def update_existing_project(
 @router.delete(
     "/{project_id}",
     status_code=status.HTTP_204_NO_CONTENT,
+    dependencies=[
+        Depends(
+            require_roles("admin")
+        )
+    ],
 )
 def delete_existing_project(
     project_id: int = Path(
