@@ -37,3 +37,24 @@ def create_progress_record(
     db.refresh(project)
 
     return record
+
+def get_progress_records(
+    db: Session,
+    project_id: str
+) -> list[ProgressRecord] | None:
+
+    # Find the project using either internal ID or public UUID
+    project = get_project(db, project_id)
+
+    if not project:
+        return None
+
+    # Get all progress records for this project
+    records = (
+        db.query(ProgressRecord)
+        .filter(ProgressRecord.project_id == project.id)
+        .order_by(ProgressRecord.record_date.desc())
+        .all()
+    )
+
+    return records

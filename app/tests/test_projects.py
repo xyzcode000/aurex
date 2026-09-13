@@ -434,3 +434,106 @@ def test_create_project_with_minimum_budget():
     data = response.json()
 
     assert data["budget"] == 0.01
+    
+
+def test_list_financial_records(client):
+    project_response = client.post(
+        "/projects/",
+        json={
+            "name": "Financial History Project",
+            "budget": 1000000,
+            "expenditure": 0,
+            "progress_percentage": 50
+        }
+    )
+
+    assert project_response.status_code == 200
+
+    project_id = project_response.json()["id"]
+
+    first_record = client.post(
+        f"/projects/{project_id}/financial",
+        json={
+            "record_date": "2026-09-01",
+            "expenditure": "100000.00",
+            "funding_received": "200000.00",
+            "description": "First financial entry"
+        }
+    )
+
+    assert first_record.status_code == 200
+
+    second_record = client.post(
+        f"/projects/{project_id}/financial",
+        json={
+            "record_date": "2026-09-10",
+            "expenditure": "150000.00",
+            "funding_received": "250000.00",
+            "description": "Latest financial entry"
+        }
+    )
+
+    assert second_record.status_code == 200
+
+    response = client.get(
+        f"/projects/{project_id}/financial"
+    )
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert len(data) == 2
+    assert data[0]["record_date"] == "2026-09-10"
+    assert data[1]["record_date"] == "2026-09-01"
+
+def test_list_progress_records(client):
+    project_response = client.post(
+        "/projects/",
+        json={
+            "name": "Progress History Project",
+            "budget": 1000000,
+            "expenditure": 0,
+            "progress_percentage": 0
+        }
+    )
+
+    assert project_response.status_code == 200
+
+    project_id = project_response.json()["id"]
+
+    first_record = client.post(
+        f"/projects/{project_id}/progress",
+        json={
+            "record_date": "2026-09-01",
+            "progress_percentage": 10,
+            "remarks": "Initial progress"
+        }
+    )
+
+    assert first_record.status_code == 200
+
+    second_record = client.post(
+        f"/projects/{project_id}/progress",
+        json={
+            "record_date": "2026-09-10",
+            "progress_percentage": 25,
+            "remarks": "Latest progress"
+        }
+    )
+
+    assert second_record.status_code == 200
+
+    response = client.get(
+        f"/projects/{project_id}/progress"
+    )
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert len(data) == 2
+    assert data[0]["record_date"] == "2026-09-10"
+    assert data[0]["progress_percentage"] == 25
+    assert data[1]["record_date"] == "2026-09-01"
+    assert data[1]["progress_percentage"] == 10

@@ -3,7 +3,10 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.schemas.progress_record import ProgressRecordCreate, ProgressRecordResponse
-from app.services.progress_record_service import create_progress_record
+from app.services.progress_record_service import (
+    create_progress_record,
+    get_progress_records
+)
 from app.schemas.milestone import MilestoneCreate, MilestoneResponse
 from app.services.milestone_service import (
     create_milestone,
@@ -17,7 +20,9 @@ from app.schemas.financial_record import (
 )
 
 from app.services.financial_record_service import (
-    create_financial_record
+    create_financial_record,
+    get_financial_records
+
 )
 
 from app.services.project_service import (
@@ -94,6 +99,27 @@ def add_financial_record(
 
     return record
 
+@router.get(
+    "/{project_id}/financial",
+    response_model=list[FinancialRecordResponse]
+)
+def list_financial_records(
+    project_id: str,
+    db: Session = Depends(get_db)
+):
+    records = get_financial_records(
+        db,
+        project_id
+    )
+
+    if records is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Project not found"
+        )
+
+    return records
+
 @router.post(
     "/{project_id}/progress",
     response_model=ProgressRecordResponse
@@ -116,6 +142,27 @@ def add_progress_record(
         )
 
     return record
+
+@router.get(
+    "/{project_id}/progress",
+    response_model=list[ProgressRecordResponse]
+)
+def list_progress_records(
+    project_id: str,
+    db: Session = Depends(get_db)
+):
+    records = get_progress_records(
+        db,
+        project_id
+    )
+
+    if records is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Project not found"
+        )
+
+    return records
 
 @router.post(
     "/{project_id}/milestones",

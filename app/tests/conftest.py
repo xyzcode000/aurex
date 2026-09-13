@@ -1,4 +1,5 @@
 import pytest
+from fastapi.testclient import TestClient
 import os
 
 
@@ -73,6 +74,10 @@ def clean_test_database():
             )
         )
         connection.commit()
+
+@pytest.fixture
+def client():
+    return TestClient(app)
 
 
 def override_get_db():
