@@ -537,3 +537,61 @@ def test_list_progress_records(client):
     assert data[0]["progress_percentage"] == 25
     assert data[1]["record_date"] == "2026-09-01"
     assert data[1]["progress_percentage"] == 10
+
+def test_list_milestones(client):
+    project_response = client.post(
+        "/projects/",
+        json={
+            "name": "Milestone History Project",
+            "budget": 1000000,
+            "expenditure": 0,
+            "progress_percentage": 20
+        }
+    )
+
+    assert project_response.status_code == 200
+
+    project_id = project_response.json()["id"]
+
+    first_milestone = client.post(
+        f"/projects/{project_id}/milestones",
+        json={
+            "name": "Construction Start",
+            "planned_date": "2026-12-01",
+            "status": "PENDING"
+        }
+    )
+
+    assert first_milestone.status_code == 200
+
+    second_milestone = client.post(
+        f"/projects/{project_id}/milestones",
+        json={
+            "name": "Tender Completion",
+            "planned_date": "2026-10-01",
+            "status": "COMPLETED",
+            "actual_date": "2026-09-28"
+        }
+    )
+
+    assert second_milestone.status_code == 200
+
+    response = client.get(
+        f"/projects/{project_id}/milestones"
+    )
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    assert len(data) == 2
+    assert data[0]["planned_date"] == "2026-10-01"
+    assert data[1]["planned_date"] == "2026-12-01"
+
+def test_list_milestones_nonexistent_project(client):
+    response = client.get(
+        "/projects/999999/milestones"
+    )
+
+    assert response.status_code == 404
+    assert response.json()["detail"] == "Project not found"
