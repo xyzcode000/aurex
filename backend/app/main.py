@@ -1,4 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
+from sqlalchemy.exc import SQLAlchemyError
 
 from app.api.projects import router as projects_router
 from app.api.auth import router as auth_router
@@ -11,6 +14,7 @@ from app.db.session import engine
 # Import models so SQLAlchemy registers them with Base
 from app.models.project import Project
 from app.models.user import User
+from app.models.project_snapshot import ProjectSnapshot
 
 
 app = FastAPI(
@@ -31,6 +35,89 @@ def create_database_tables():
     Create database tables when Aurex starts.
     """
     Base.metadata.create_all(bind=engine)
+
+
+# =========================================================
+# GLOBAL ERROR HANDLERS
+# =========================================================
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(
+    request: Request,
+    exc: RequestValidationError,
+):
+    """
+    Handle invalid request data with a clean API response.
+
+    FastAPI/Pydantic validation errors can contain Python
+    exception objects inside the error context. Those objects
+    are converted to strings before returning JSON.
+    """
+
+    validation_details = []
+
+    for error in exc.errors():
+        clean_error = error.copy()
+
+        if "ctx" in clean_error:
+            clean_error["ctx"] = {
+                key: str(value)
+                for key, value in clean_error["ctx"].items()
+            }
+
+        validation_details.append(clean_error)
+
+    return JSONResponse(
+        status_code=422,
+        content={
+            "error": "validation_error",
+            "message": "The request contains invalid data.",
+            "details": validation_details,
+        },
+    )
+
+
+@app.exception_handler(SQLAlchemyError)
+async def database_exception_handler(
+    request: Request,
+    exc: SQLAlchemyError,
+):
+    """
+    Handle database errors without exposing internal
+    database details to the client.
+    """
+
+    return JSONResponse(
+        status_code=500,
+        content={
+            "error": "database_error",
+            "message": (
+                "A database error occurred while "
+                "processing the request."
+            ),
+        },
+    )
+
+
+@app.exception_handler(Exception)
+async def general_exception_handler(
+    request: Request,
+    exc: Exception,
+):
+    """
+    Handle unexpected application errors safely.
+
+    Internal exception details are intentionally not
+    returned to the client.
+    """
+
+    return JSONResponse(
+        status_code=500,
+        content={
+            "error": "internal_server_error",
+            "message": "An unexpected server error occurred.",
+        },
+    )
 
 
 # =========================================================

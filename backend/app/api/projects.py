@@ -8,11 +8,18 @@ from app.core.dependencies import (
     require_roles,
 )
 
+from app.models.project_snapshot import ProjectSnapshot
+
 from app.schemas.project import (
     ProjectCreate,
     ProjectResponse,
     ProjectUpdate,
     ScenarioRequest,
+)
+
+from app.schemas.project_snapshot import (
+    ProjectSnapshotCreate,
+    ProjectSnapshotResponse,
 )
 
 from app.services.project_service import (
@@ -21,6 +28,10 @@ from app.services.project_service import (
     get_project_by_id,
     update_project,
     delete_project,
+)
+
+from app.services.project_snapshot_service import (
+    create_project_snapshot,
 )
 
 from app.services.budget_intelligence import analyze_budget
@@ -94,6 +105,92 @@ def validate_timeline_data(project):
                     "the following project fields."
                 ),
                 "missing_fields": missing_fields,
+            },
+        )
+
+
+def validate_project_update_dates(
+    project,
+    project_data: ProjectUpdate,
+):
+    """
+    Validate date relationships using the final state
+    of the project.
+
+    This is required for partial updates because
+    ProjectUpdate may contain only one side of a
+    date relationship.
+    """
+
+    # -----------------------------------------------------
+    # Determine final planned dates
+    # -----------------------------------------------------
+
+    planned_start_date = (
+        project_data.planned_start_date
+        if project_data.planned_start_date is not None
+        else project.planned_start_date
+    )
+
+    planned_end_date = (
+        project_data.planned_end_date
+        if project_data.planned_end_date is not None
+        else project.planned_end_date
+    )
+
+    # -----------------------------------------------------
+    # Determine final actual dates
+    # -----------------------------------------------------
+
+    actual_start_date = (
+        project_data.actual_start_date
+        if project_data.actual_start_date is not None
+        else project.actual_start_date
+    )
+
+    actual_end_date = (
+        project_data.actual_end_date
+        if project_data.actual_end_date is not None
+        else project.actual_end_date
+    )
+
+    # -----------------------------------------------------
+    # Validate planned timeline
+    # -----------------------------------------------------
+
+    if (
+        planned_start_date is not None
+        and planned_end_date is not None
+        and planned_end_date < planned_start_date
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail={
+                "message": (
+                    "planned_end_date must be on or after "
+                    "planned_start_date."
+                ),
+                "field": "planned_end_date",
+            },
+        )
+
+    # -----------------------------------------------------
+    # Validate actual timeline
+    # -----------------------------------------------------
+
+    if (
+        actual_start_date is not None
+        and actual_end_date is not None
+        and actual_end_date < actual_start_date
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail={
+                "message": (
+                    "actual_end_date must be on or after "
+                    "actual_start_date."
+                ),
+                "field": "actual_end_date",
             },
         )
 
@@ -407,6 +504,97 @@ def unified_intelligence(
 
 
 # =========================================================
+# PROJECT SNAPSHOT — CREATE
+# =========================================================
+
+@router.post(
+    "/{project_id}/snapshots",
+    response_model=ProjectSnapshotResponse,
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[
+        Depends(
+            require_roles(
+                "admin",
+                "project_manager",
+            )
+        )
+    ],
+)
+def create_snapshot(
+    snapshot_data: ProjectSnapshotCreate,
+    project_id: int = Path(
+        ...,
+        title="Project ID",
+        description="Positive numeric project identifier",
+        ge=1,
+    ),
+    db: Session = Depends(get_db),
+):
+    """
+    Capture the current project state as a historical snapshot.
+
+    The current project record is not modified.
+    """
+
+    project = get_required_project(
+        db=db,
+        project_id=project_id,
+    )
+
+    try:
+        return create_project_snapshot(
+            db=db,
+            project=project,
+            observation_date=snapshot_data.observation_date,
+        )
+
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=str(exc),
+        )
+
+
+# =========================================================
+# PROJECT SNAPSHOT — LIST
+# =========================================================
+
+@router.get(
+    "/{project_id}/snapshots",
+    response_model=list[ProjectSnapshotResponse],
+)
+def list_snapshots(
+    project_id: int = Path(
+        ...,
+        title="Project ID",
+        description="Positive numeric project identifier",
+        ge=1,
+    ),
+    db: Session = Depends(get_db),
+):
+    """
+    Return historical snapshots for a project
+    in chronological order.
+    """
+
+    project = get_required_project(
+        db=db,
+        project_id=project_id,
+    )
+
+    return (
+        db.query(ProjectSnapshot)
+        .filter(
+            ProjectSnapshot.project_id == project.id
+        )
+        .order_by(
+            ProjectSnapshot.observation_date.asc()
+        )
+        .all()
+    )
+
+
+# =========================================================
 # GET SINGLE PROJECT
 # =========================================================
 
@@ -458,6 +646,12 @@ def update_existing_project(
     project = get_required_project(
         db=db,
         project_id=project_id,
+    )
+
+    # Validate the final project state before committing changes.
+    validate_project_update_dates(
+        project=project,
+        project_data=project_data,
     )
 
     return update_project(

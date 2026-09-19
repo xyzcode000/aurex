@@ -42,13 +42,18 @@ def get_db():
     """
     Provides a database session for each API request.
 
-    The session is always closed after the request,
-    even if an exception occurs.
+    The session is rolled back if an unexpected exception
+    occurs during the request and is always closed afterward.
     """
 
     db = SessionLocal()
 
     try:
         yield db
+
+    except Exception:
+        db.rollback()
+        raise
+
     finally:
         db.close()

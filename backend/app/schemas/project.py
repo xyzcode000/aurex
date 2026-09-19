@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from decimal import Decimal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 # -------------------------------------------------
@@ -61,6 +61,38 @@ class ProjectBase(BaseModel):
         ge=0,
         le=100,
     )
+
+    # -------------------------------------------------
+    # CROSS-FIELD DATE VALIDATION
+    # -------------------------------------------------
+
+    @model_validator(mode="after")
+    def validate_dates(self):
+        """
+        Validate logical relationships between project dates.
+        """
+
+        # Planned timeline validation
+        if (
+            self.planned_start_date is not None
+            and self.planned_end_date is not None
+            and self.planned_end_date < self.planned_start_date
+        ):
+            raise ValueError(
+                "planned_end_date must be on or after planned_start_date."
+            )
+
+        # Actual timeline validation
+        if (
+            self.actual_start_date is not None
+            and self.actual_end_date is not None
+            and self.actual_end_date < self.actual_start_date
+        ):
+            raise ValueError(
+                "actual_end_date must be on or after actual_start_date."
+            )
+
+        return self
 
 
 # -------------------------------------------------
