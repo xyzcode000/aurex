@@ -1,3 +1,5 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
@@ -17,24 +19,30 @@ from app.models.user import User
 from app.models.project_snapshot import ProjectSnapshot
 
 
+# =========================================================
+# APPLICATION LIFESPAN
+# =========================================================
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """
+    Application startup and shutdown lifecycle.
+
+    Database tables are created when Aurex starts.
+    """
+
+    Base.metadata.create_all(bind=engine)
+
+    yield
+
+
 app = FastAPI(
     title=settings.app_name,
     description="Project Intelligence & Risk Investigation Engine",
     version=settings.app_version,
     debug=settings.debug,
+    lifespan=lifespan,
 )
-
-
-# =========================================================
-# DATABASE INITIALIZATION
-# =========================================================
-
-@app.on_event("startup")
-def create_database_tables():
-    """
-    Create database tables when Aurex starts.
-    """
-    Base.metadata.create_all(bind=engine)
 
 
 # =========================================================
