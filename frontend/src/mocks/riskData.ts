@@ -7,5 +7,11 @@ export const riskData: RiskData = {
   progress_risk: 91,
   anomaly_score: 63,
   overall_risk: 84,
-  risk_level: "HIGH",
+  risk_level: "HIGH", 
+   evidence: [
+    "Project cost is above the planned budget",
+    "Schedule is showing delays",
+    "Progress is below expected level",
+    "Anomaly detected in recent project data",
+  ],
 };

@@ -1,24 +1,10 @@
-import RiskCard from "../components/RiskCard";
-import { riskData } from "../mocks/riskData";
-
-function RiskCenter() {
-  return (
-    <div>
-      <h1>Aurex Risk Center</h1>
-
-      <p>Project ID: {riskData.project_id}</p>
-
-      <div>
-        <RiskCard title="Cost Risk" value={riskData.cost_risk} />
-        <RiskCard title="Schedule Risk" value={riskData.schedule_risk} />
-        <RiskCard title="Progress Risk" value={riskData.progress_risk} />
-        <RiskCard title="Anomaly Score" value={riskData.anomaly_score} />
-        <RiskCard title="Overall Risk" value={riskData.overall_risk} />
-      </div>
-
-      <h2>Risk Level: {riskData.risk_level}</h2>
-    </div>
-  );
+export interface RiskData {
+  project_id: string;
+  cost_risk: number;
+  schedule_risk: number;
+  progress_risk: number;
+  anomaly_score: number;
+  overall_risk: number;
+  risk_level: string;
+  evidence: string[];
 }
-
-export default RiskCenter;
