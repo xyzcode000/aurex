@@ -10,14 +10,6 @@ from app.api.auth import router as auth_router
 
 from app.core.config import settings
 
-from app.db.base import Base
-from app.db.session import engine
-
-# Import models so SQLAlchemy registers them with Base
-from app.models.project import Project
-from app.models.user import User
-from app.models.project_snapshot import ProjectSnapshot
-
 
 # =========================================================
 # APPLICATION LIFESPAN
@@ -28,10 +20,9 @@ async def lifespan(app: FastAPI):
     """
     Application startup and shutdown lifecycle.
 
-    Database tables are created when Aurex starts.
+    Database schema changes are managed exclusively through
+    Alembic migrations.
     """
-
-    Base.metadata.create_all(bind=engine)
 
     yield
 
@@ -123,7 +114,7 @@ async def general_exception_handler(
         status_code=500,
         content={
             "error": "internal_server_error",
-            "message": "An unexpected server error occurred.",
+            "message": "An unexpected application error occurred.",
         },
     )
 

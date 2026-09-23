@@ -1,11 +1,57 @@
 import uuid
 
 from fastapi.testclient import TestClient
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import StaticPool
 
+from app.db.base import Base
+from app.db.session import get_db
 from app.main import app
 
 
+# =========================================================
+# TEST DATABASE
+# =========================================================
+
+TEST_DATABASE_URL = "sqlite://"
+
+test_engine = create_engine(
+    TEST_DATABASE_URL,
+    connect_args={
+        "check_same_thread": False,
+    },
+    poolclass=StaticPool,
+)
+
+TestingSessionLocal = sessionmaker(
+    autocommit=False,
+    autoflush=False,
+    bind=test_engine,
+)
+
+
+def override_get_db():
+    db = TestingSessionLocal()
+
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+# Create the test schema once for the authentication test suite.
+Base.metadata.create_all(bind=test_engine)
+
+# Make the application use the isolated test database.
+app.dependency_overrides[get_db] = override_get_db
+
 client = TestClient(app)
+
+
+# =========================================================
+# HELPERS
+# =========================================================
 
 
 def unique_email(prefix: str) -> str:
