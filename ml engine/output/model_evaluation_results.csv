@@ -1,0 +1,4 @@
+model,task,target,validation_mae,validation_rmse,validation_r2,test_mae,test_rmse,test_r2,validation_accuracy,validation_precision,validation_recall,validation_f1,test_accuracy,test_precision,test_recall,test_f1
+cost_overrun_model,regression,Cost Overrun,4.865747030716137,8.053161766616116,0.8122427213067123,5.939107699583326,9.632620809119139,0.7352734101226707,,,,,,,,
+time_overrun_model,regression,Time / Delay,259.0625577555877,398.26224987705547,0.24463027816457694,231.5601580272779,371.81664721863945,0.6031598590974887,,,,,,,,
+project_risk_model,classification,Project Risk,,,,,,,0.7367986798679867,0.7496781840482113,0.7470218957453442,0.7420889635596531,0.6555661274976213,0.6819042916199901,0.6738973301086979,0.6719741369667437

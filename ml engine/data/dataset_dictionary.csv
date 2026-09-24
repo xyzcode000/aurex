@@ -1,0 +1,65 @@
+column_name,data_type,unit,description,source_or_formula,feature_or_target,available_at_prediction_time,notes
+project_id,string,-,Stable synthetic identifier for a project.,Generated: AUX-SYN-####,identifier,yes,Use for group-aware splits.
+observation_date,date,YYYY-MM-DD,Month-end date of the snapshot.,Simulation month end,identifier,yes,Composite key with project_id.
+project_name,string,-,Synthetic project name.,Generated,metadata,yes,Not a model feature; free text only.
+implementing_agency,string,-,Synthetic implementing agency.,Generated (invented names),feature,yes,Categorical; encode before modelling.
+sector,string,-,Infrastructure sector.,Generated,feature,yes,Categorical.
+location,string,-,Indian state/UT of the project.,Generated,feature,yes,Categorical.
+status,string,-,Project status as of the observation date.,Completed if actual_end_date set; Delayed if overdue or schedule revised; else Ongoing,feature,yes,Derived from as-of state only.
+original_cost_crore,float,INR crore,Originally approved cost.,Simulated lognormal by sector,feature,yes,Fixed for the project's life.
+revised_cost_crore,float,INR crore,Latest revised cost approved on or before the observation date.,Set at each cost revision event,feature,yes,NULL means no revision has happened yet - do not impute with 0.
+applicable_cost_crore,float,INR crore,Cost baseline currently in force.,revised_cost_crore if present else original_cost_crore,feature,yes,
+expenditure_crore,float,INR crore,Cumulative expenditure to date.,"Simulated from progress, escalation and front-loading",feature,yes,Monotonic non-decreasing.
+planned_start_date,date,YYYY-MM-DD,Approved start date.,Simulated,feature,yes,
+planned_end_date,date,YYYY-MM-DD,Currently approved completion date (after any schedule revisions to date).,Original end + approved extensions up to observation_date,feature,yes,
+original_planned_end_date,date,YYYY-MM-DD,Completion date in the original sanction.,Simulated,feature,yes,Baseline for the time-overrun target.
+actual_start_date,date,YYYY-MM-DD,Actual physical start.,Simulated,feature,yes,NULL if the project had not started by the observation date.
+actual_end_date,date,YYYY-MM-DD,Actual completion date.,Simulated,feature,yes,NULL unless the project had already completed on or before the observation date. NEVER back-filled - that would be leakage.
+planned_progress_percent,float,%,Physical progress the current approved schedule implies for this date.,"100 * (obs - planned_start) / (planned_end - planned_start), clipped to [0,100]",feature,yes,"Uses the CURRENT approved schedule, so it resets after a schedule revision."
+actual_progress_percent,float,%,Reported physical progress.,Simulated monthly accrual,feature,yes,"0-100, non-decreasing within a project."
+milestones_planned,int,count,Total milestones in the project plan.,Simulated 6-14,feature,yes,
+milestones_completed,int,count,Milestones completed by the observation date.,floor(milestones_planned * actual_progress/100),feature,yes,
+milestones_delayed,int,count,Milestones that should have been completed by now but are not.,"max(0, floor(milestones_planned*planned_progress/100) - milestones_completed)",feature,yes,
+delay_days_so_far,int,days,Slippage visible as of this date.,"schedule_revision_days + overdue_days + max(0, start_delay_days)",feature,yes,Contains no future information.
+months_since_previous_observation,float,months,Gap to the previous available snapshot of this project.,Difference of observation months,feature,yes,NULL on the first observation. >1 indicates a reporting gap.
+previous_month_expenditure_crore,float,INR crore,Expenditure at the previous available snapshot.,Lag of expenditure_crore,feature,yes,NULL on the first observation.
+monthly_expenditure_change_percent,float,%,Growth in cumulative expenditure since the previous snapshot.,100*(expenditure - prev_expenditure)/prev_expenditure,feature,yes,NULL on first observation or zero base.
+previous_month_progress_percent,float,%,Physical progress at the previous available snapshot.,Lag of actual_progress_percent,feature,yes,NULL on the first observation.
+monthly_progress_change_points,float,percentage points,Change in physical progress since the previous snapshot.,actual_progress - prev_progress,feature,yes,"Percentage POINTS, not percent, to avoid divide-by-zero at 0 progress."
+cost_revision_count,int,count,Cost revisions approved up to this date.,Simulation event counter,feature,yes,
+schedule_revision_count,int,count,Schedule extensions approved up to this date.,Simulation event counter,feature,yes,
+cost_revision_percent,float,%,Escalation of the approved cost so far.,100*(revised_cost - original_cost)/original_cost; 0 when no revision exists,feature,yes,
+expenditure_utilization_percent,float,%,Share of the applicable budget already spent.,100*expenditure/applicable_cost,feature,yes,May exceed 100 shortly before a revision is approved.
+progress_gap_percent,float,percentage points,Schedule shortfall in physical terms.,planned_progress - actual_progress,feature,yes,Positive means behind schedule.
+remaining_progress_percent,float,%,Physical work left.,100 - actual_progress,feature,yes,
+cost_performance_index,float,ratio,Earned-value cost performance index.,(actual_progress/100 * original_cost) / expenditure,feature,yes,<1 means spending faster than value earned. NULL when expenditure is 0.
+schedule_performance_index,float,ratio,Earned-value schedule performance index.,actual_progress / planned_progress,feature,yes,<1 means behind schedule. NULL when planned_progress is 0.
+expenditure_to_progress_ratio,float,ratio,Budget consumed per unit of physical progress.,expenditure_utilization_percent / actual_progress_percent,feature,yes,NULL at 0 progress.
+schedule_revision_days,int,days,Extension granted so far.,planned_end_date - original_planned_end_date,feature,yes,
+start_delay_days,int,days,Delay in physical start.,actual_start_date - planned_start_date,feature,yes,NULL if not yet started.
+planned_duration_days,int,days,Original sanctioned duration.,original_planned_end_date - planned_start_date,feature,yes,
+current_planned_duration_days,int,days,Duration under the current approved schedule.,planned_end_date - planned_start_date,feature,yes,
+elapsed_duration_days,int,days,Days since the planned start.,observation_date - planned_start_date,feature,yes,
+project_age_days,int,days,Days since the actual start.,observation_date - actual_start_date,feature,yes,NULL if not yet started.
+remaining_planned_days,int,days,Days to the current approved completion date.,planned_end_date - observation_date,feature,yes,Negative when overdue.
+schedule_delay_percent,float,%,Slippage relative to the original duration.,100*delay_days_so_far/planned_duration_days,feature,yes,
+elapsed_schedule_percent,float,%,Share of the current schedule consumed.,100*elapsed_duration_days/current_planned_duration_days,feature,yes,
+number_of_revisions,int,count,Total approved revisions to date.,cost_revision_count + schedule_revision_count,feature,yes,
+milestone_completion_ratio,float,ratio,Share of milestones completed.,milestones_completed / milestones_planned,feature,yes,
+milestone_delay_ratio,float,ratio,Share of milestones overdue.,milestones_delayed / milestones_planned,feature,yes,
+cost_growth_rate_percent_per_year,float,% per year,Annualised rate of approved-cost escalation.,cost_revision_percent * 365 / project_age_days,feature,yes,NULL for projects younger than 60 days or not started.
+observation_index,int,count,1-based index of this snapshot within the project.,cumcount within project_id,feature,yes,
+observation_year,int,year,Calendar year of the snapshot.,observation_date.year,feature,yes,
+observation_month,int,month,Calendar month of the snapshot.,observation_date.month,feature,yes,
+target_future_cost_overrun_percent_vs_original,float,%,Eventual total approved cost against the ORIGINAL sanction.,100*(final_approved_cost - original_cost)/original_cost,target,NO,Same value on every snapshot of a project (project-level outcome).
+target_future_cost_overrun_percent_vs_current,float,%,Further escalation still to come after the observation date.,100*(final_approved_cost - applicable_cost_at_obs)/applicable_cost_at_obs,target,NO,Varies across snapshots; the more useful regression target for an as-of forecast.
+target_cost_overrun_flag,int,0/1,Whether the project eventually overruns its original cost by >10%.,1 if target_future_cost_overrun_percent_vs_original > 10 else 0,target,NO,"Threshold 10% is a documented modelling choice, not an official definition."
+target_future_delay_days,float,days,Eventual completion delay against the original plan.,actual_end_date - original_planned_end_date,target,NO,Negative means early completion.
+target_future_time_overrun_percent,float,%,Delay relative to the original duration.,100*target_future_delay_days/planned_duration_days,target,NO,
+target_time_overrun_flag,int,0/1,Whether the eventual delay exceeds 10% of the original duration.,1 if target_future_time_overrun_percent > 10 else 0,target,NO,Threshold 10% is a documented modelling choice.
+target_future_risk_score,float,0-100,Composite outcome-based risk score for the project.,"40*min(1,max(0,cost_overrun_pct)/50) + 40*min(1,max(0,time_overrun_pct)/50) + 20*min(1,max(0,max_progress_gap_over_life)/30)",target,NO,Deterministic function of simulated outcomes. Project-level.
+target_future_risk_level,string,Low/Medium/High,Banded risk level.,"Low <30, Medium 30-60, High >=60 on target_future_risk_score",target,NO,
+target_early_warning_flag_90d,int,0/1,Whether a deterioration event occurs within 92 days after this observation.,"1 if a new cost revision OR a new schedule revision is approved, OR progress_gap widens by >=8 percentage points, within the next 92 days",target,NO,Row-level forward-looking label. See README caveat on optimistic performance.
+outcome_after_cutoff,int,0/1,Whether the project's outcome occurs after the 2026-05-31 snapshot cutoff.,1 if the project had not completed by the cutoff,metadata,yes,In a real deployment these projects would have NO label yet. Useful for a realistic labelled-subset experiment.
+recommended_split_project_aware,string,train/validation/test,Suggested group-aware split.,"Random 70/15/15 assignment over project_id, seed 7",metadata,yes,All snapshots of a project fall in one split.
+recommended_split_time_aware,string,train/validation/test,Suggested time-based split.,"train <=2024-12-31, validation <=2025-08-31, test after",metadata,yes,Use with care: the same project appears in several splits at different ages.
