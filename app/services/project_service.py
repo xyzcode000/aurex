@@ -3,7 +3,7 @@ from uuid import UUID
 from sqlalchemy.orm import Session
 
 from app.models.project import Project
-from app.schemas.project import ProjectCreate
+from app.schemas.project import ProjectCreate, ProjectUpdate
 
 
 def calculate_risk_score(project: Project) -> float:
@@ -100,13 +100,6 @@ def get_project(
     project_id: str
 ) -> Project | None:
 
-    from uuid import UUID
-
-def get_project(
-    db: Session,
-    project_id: str
-) -> Project | None:
-
     # Try integer ID first
     try:
         internal_id = int(project_id)
@@ -135,3 +128,43 @@ def get_project(
 
     except ValueError:
         return None
+
+def update_project(
+    db: Session,
+    project_id: str,
+    project_data: ProjectUpdate
+) -> Project | None:
+
+    # Find the project
+    project = get_project(db, project_id)
+
+    if not project:
+        return None
+
+    # Get only fields that were actually provided
+    update_data = project_data.model_dump(
+        exclude_unset=True
+    )
+
+    # Update project fields
+    for field, value in update_data.items():
+        setattr(project, field, value)
+
+    # Recalculate risk after update
+    project.risk_score = calculate_risk_score(project)
+
+    db.commit()
+    db.refresh(project)
+
+    return project
+
+def delete_project(db: Session, project_id: str):
+    project = get_project(db, project_id)
+
+    if not project:
+        return None
+
+    db.delete(project)
+    db.commit()
+
+    return project

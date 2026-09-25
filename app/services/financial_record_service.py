@@ -5,7 +5,10 @@ from app.schemas.financial_record import (
     FinancialRecordCreate,
     FinancialRecordResponse
 )
-from app.services.project_service import get_project
+from app.services.project_service import (
+    get_project,
+    calculate_risk_score
+)
 
 
 def create_financial_record(
@@ -26,12 +29,23 @@ def create_financial_record(
         **record_data.model_dump()
     )
 
-    # Save to database
+    # Save financial record
     db.add(record)
     db.commit()
     db.refresh(record)
 
+    # Update project's total expenditure
+    project.expenditure += float(record.expenditure)  
+
+    # Recalculate project risk score
+    project.risk_score = calculate_risk_score(project)
+
+    # Save updated project
+    db.commit()
+    db.refresh(project)
+
     return record
+
 
 def get_financial_records(
     db: Session,
