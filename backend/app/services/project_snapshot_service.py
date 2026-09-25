@@ -7,20 +7,27 @@ from app.models.project import Project
 from app.models.project_snapshot import ProjectSnapshot
 
 
+ALLOWED_SNAPSHOT_TYPES = {
+    "baseline",
+    "observation",
+}
+
+
 def create_project_snapshot(
     db: Session,
     project: Project,
     observation_date: date,
+    snapshot_type: str = "observation",
 ) -> ProjectSnapshot:
-    """
-    Capture the current project state as a historical snapshot.
-
-    The project itself is never modified.
-    """
+    if snapshot_type not in ALLOWED_SNAPSHOT_TYPES:
+        raise ValueError(
+            "snapshot_type must be either 'baseline' or 'observation'."
+        )
 
     snapshot = ProjectSnapshot(
         project_id=project.id,
         observation_date=observation_date,
+        snapshot_type=snapshot_type,
         implementing_agency=project.implementing_agency,
         location=project.location,
         status=project.status,

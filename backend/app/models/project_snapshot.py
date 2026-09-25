@@ -33,8 +33,14 @@ class ProjectSnapshot(Base):
     Historical point-in-time state of a project.
 
     A snapshot represents the project data known/recorded at a
-    particular observation date. The current `projects` table remains
-    the operational source of truth for the latest state.
+    particular observation date.
+
+    snapshot_type distinguishes:
+    - baseline: first observation created when Aurex onboards a project
+    - observation: subsequent historical observations
+
+    The current `projects` table remains the operational source
+    of truth for the latest state.
     """
 
     __tablename__ = "project_snapshots"
@@ -49,6 +55,10 @@ class ProjectSnapshot(Base):
             "ix_project_snapshots_project_date",
             "project_id",
             "observation_date",
+        ),
+        CheckConstraint(
+            "snapshot_type IN ('baseline', 'observation')",
+            name="ck_project_snapshots_snapshot_type",
         ),
         CheckConstraint(
             "approved_budget >= 0",
@@ -99,6 +109,12 @@ class ProjectSnapshot(Base):
     observation_date: Mapped[date] = mapped_column(
         Date,
         nullable=False,
+    )
+
+    snapshot_type: Mapped[str] = mapped_column(
+        String(20),
+        nullable=False,
+        default="observation",
     )
 
     implementing_agency: Mapped[str | None] = mapped_column(

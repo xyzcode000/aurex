@@ -2,18 +2,20 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from sqlalchemy.exc import SQLAlchemyError
 
-from app.api.projects import router as projects_router
+from app.api.admin import router as admin_router
 from app.api.auth import router as auth_router
-
+from app.api.projects import router as projects_router
 from app.core.config import settings
 
 
 # =========================================================
 # APPLICATION LIFESPAN
 # =========================================================
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -27,6 +29,11 @@ async def lifespan(app: FastAPI):
     yield
 
 
+# =========================================================
+# APPLICATION
+# =========================================================
+
+
 app = FastAPI(
     title=settings.app_name,
     description="Project Intelligence & Risk Investigation Engine",
@@ -37,8 +44,39 @@ app = FastAPI(
 
 
 # =========================================================
+# CORS
+# =========================================================
+
+
+allowed_origins = [
+    origin.strip()
+    for origin in settings.cors_origins.split(",")
+    if origin.strip()
+]
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allowed_origins,
+    allow_credentials=True,
+    allow_methods=[
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE",
+        "OPTIONS",
+    ],
+    allow_headers=[
+        "Authorization",
+        "Content-Type",
+    ],
+)
+
+
+# =========================================================
 # GLOBAL ERROR HANDLERS
 # =========================================================
+
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(
@@ -123,15 +161,21 @@ async def general_exception_handler(
 # API ROUTES
 # =========================================================
 
-# Project APIs
+
 app.include_router(
     projects_router,
     prefix="/api",
 )
 
-# Authentication APIs
+
 app.include_router(
     auth_router,
+    prefix="/api",
+)
+
+
+app.include_router(
+    admin_router,
     prefix="/api",
 )
 
@@ -139,6 +183,7 @@ app.include_router(
 # =========================================================
 # ROOT
 # =========================================================
+
 
 @app.get("/")
 def root():
@@ -153,6 +198,7 @@ def root():
 # =========================================================
 # HEALTH CHECK
 # =========================================================
+
 
 @app.get("/health")
 def health_check():

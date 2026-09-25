@@ -1,4 +1,18 @@
+from typing import Literal
+
 from pydantic import BaseModel, EmailStr, Field
+
+
+# =========================================================
+# ROLE DEFINITIONS
+# =========================================================
+
+UserRole = Literal[
+    "admin",
+    "project_manager",
+    "analyst",
+    "viewer",
+]
 
 
 # =========================================================
@@ -58,3 +72,41 @@ class UserResponse(BaseModel):
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
+
+
+# =========================================================
+# ADMIN USER CREATION
+# =========================================================
+
+class AdminUserCreateRequest(BaseModel):
+    email: EmailStr
+
+    full_name: str = Field(
+        ...,
+        min_length=2,
+        max_length=255,
+    )
+
+    password: str = Field(
+        ...,
+        min_length=8,
+        max_length=72,
+    )
+
+    role: UserRole = "viewer"
+
+
+# =========================================================
+# ADMIN USER UPDATE
+# =========================================================
+
+class AdminUserUpdateRequest(BaseModel):
+    full_name: str | None = Field(
+        default=None,
+        min_length=2,
+        max_length=255,
+    )
+
+    role: UserRole | None = None
+
+    is_active: bool | None = None

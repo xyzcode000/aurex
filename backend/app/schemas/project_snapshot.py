@@ -6,7 +6,7 @@ from pydantic import BaseModel, ConfigDict
 
 class ProjectSnapshotCreate(BaseModel):
     """
-    Request used to record a historical project snapshot.
+    Request used to record a historical project observation.
 
     The API only accepts the observation date.
     The remaining project state is captured from the current project.
@@ -21,6 +21,7 @@ class ProjectSnapshotResponse(BaseModel):
     id: int
     project_id: int
     observation_date: date
+    snapshot_type: str
 
     implementing_agency: str | None
     location: str | None

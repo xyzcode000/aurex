@@ -183,3 +183,40 @@ def test_snapshots_are_stored_in_chronological_order(db_session, sample_project)
     assert len(snapshots) == 2
     assert snapshots[0].observation_date == date(2026, 9, 13)
     assert snapshots[1].observation_date == date(2026, 9, 14)
+
+def test_snapshot_defaults_to_observation(db_session, sample_project):
+    snapshot = create_project_snapshot(
+        db=db_session,
+        project=sample_project,
+        observation_date=date(2026, 9, 13),
+    )
+
+    assert snapshot.snapshot_type == "observation"
+
+
+def test_snapshot_can_be_created_as_baseline(db_session, sample_project):
+    snapshot = create_project_snapshot(
+        db=db_session,
+        project=sample_project,
+        observation_date=date(2026, 9, 13),
+        snapshot_type="baseline",
+    )
+
+    assert snapshot.id is not None
+    assert snapshot.project_id == sample_project.id
+    assert snapshot.snapshot_type == "baseline"
+    assert snapshot.actual_progress == sample_project.actual_progress
+    assert snapshot.expenditure == sample_project.expenditure
+
+
+def test_invalid_snapshot_type_is_rejected(db_session, sample_project):
+    with pytest.raises(
+        ValueError,
+        match="snapshot_type must be either 'baseline' or 'observation'.",
+    ):
+        create_project_snapshot(
+            db=db_session,
+            project=sample_project,
+            observation_date=date(2026, 9, 13),
+            snapshot_type="invalid",
+        )

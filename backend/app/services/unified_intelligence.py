@@ -5,18 +5,23 @@ from app.services.predictive_intelligence import predict_final_cost
 from app.services.timeline_prediction import predict_completion_date
 from app.services.early_warning import generate_early_warning
 from app.services.investigation_engine import investigate_project
+from app.services.trajectory_intelligence import (
+    calculate_historical_trajectory,
+)
 
 
-def generate_unified_intelligence(project):
+def generate_unified_intelligence(
+    project,
+    snapshots=None,
+):
     """
     Aurex Unified Intelligence Engine.
 
     Orchestrates all Aurex intelligence modules into
     one consolidated project intelligence report.
 
-    The individual intelligence engines remain the
-    source of truth. This layer combines their results
-    into a management-oriented intelligence view.
+    Historical snapshots are supplied by the caller so
+    this service remains independent from database access.
     """
 
     # =========================================================
@@ -37,7 +42,15 @@ def generate_unified_intelligence(project):
     risk = analyze_risk(project)
 
     # =========================================================
-    # 2. PREDICTIVE INTELLIGENCE
+    # 2. HISTORICAL TRAJECTORY
+    # =========================================================
+
+    trajectory = calculate_historical_trajectory(
+        snapshots or []
+    )
+
+    # =========================================================
+    # 3. PREDICTIVE INTELLIGENCE
     # =========================================================
 
     cost_prediction = predict_final_cost(project)
@@ -50,19 +63,19 @@ def generate_unified_intelligence(project):
     )
 
     # =========================================================
-    # 3. EARLY WARNING
+    # 4. EARLY WARNING
     # =========================================================
 
     early_warning = generate_early_warning(project)
 
     # =========================================================
-    # 4. INVESTIGATION
+    # 5. INVESTIGATION
     # =========================================================
 
     investigation = investigate_project(project)
 
     # =========================================================
-    # 5. RISK + PREDICTION STATUS
+    # 6. RISK + PREDICTION STATUS
     # =========================================================
 
     risk_score = float(
@@ -85,11 +98,11 @@ def generate_unified_intelligence(project):
     )
 
     # =========================================================
-    # 6. PROJECT HEALTH
+    # 7. PROJECT HEALTH
     #
-    # Project health considers both:
-    # - Aggregate risk
-    # - Predictive threats
+    # Existing health calculation is intentionally preserved.
+    # Historical trajectory is currently a separate signal and
+    # is not yet used as a calibrated risk weight.
     # =========================================================
 
     if (
@@ -117,7 +130,7 @@ def generate_unified_intelligence(project):
         project_health = "low"
 
     # =========================================================
-    # 7. KEY MANAGEMENT METRICS
+    # 8. KEY MANAGEMENT METRICS
     # =========================================================
 
     reported_progress_gap = float(
@@ -147,7 +160,7 @@ def generate_unified_intelligence(project):
     )
 
     # =========================================================
-    # 8. EXECUTIVE INSIGHTS
+    # 9. EXECUTIVE INSIGHTS
     # =========================================================
 
     executive_insights = []
@@ -222,7 +235,7 @@ def generate_unified_intelligence(project):
             )
 
     # =========================================================
-    # 9. EXECUTIVE SUMMARY
+    # 10. EXECUTIVE SUMMARY
     # =========================================================
 
     if project_health == "critical":
@@ -250,11 +263,43 @@ def generate_unified_intelligence(project):
         )
 
     # =========================================================
-    # 10. INTELLIGENCE STATUS
-    #
-    # Makes the difference between aggregate risk,
-    # predictive threats, warnings and investigation
-    # explicit for the frontend and judges.
+    # 11. HISTORICAL TRAJECTORY RESPONSE
+    # =========================================================
+
+    historical_trajectory = {
+        "observation_count": trajectory.observation_count,
+        "first_observation_date": (
+            trajectory.first_observation_date
+        ),
+        "latest_observation_date": (
+            trajectory.latest_observation_date
+        ),
+        "progress_change": trajectory.progress_change,
+        "expenditure_change": trajectory.expenditure_change,
+        "progress_velocity": trajectory.progress_velocity,
+        "latest_progress_velocity": (
+            trajectory.latest_progress_velocity
+        ),
+        "expenditure_velocity": (
+            trajectory.expenditure_velocity
+        ),
+        "latest_expenditure_velocity": (
+            trajectory.latest_expenditure_velocity
+        ),
+        "progress_acceleration": (
+            trajectory.progress_acceleration
+        ),
+        "progress_gap_change": (
+            trajectory.progress_gap_change
+        ),
+        "progress_trend": trajectory.progress_trend,
+        "expenditure_trend": trajectory.expenditure_trend,
+        "progress_direction": trajectory.progress_direction,
+        "schedule_trajectory": trajectory.schedule_trajectory,
+    }
+
+    # =========================================================
+    # 12. INTELLIGENCE STATUS
     # =========================================================
 
     intelligence_status = {
@@ -270,6 +315,16 @@ def generate_unified_intelligence(project):
         "timeline_prediction": {
             "status": timeline_prediction_status,
             "predicted_delay_days": predicted_delay_days,
+        },
+
+        "historical_trajectory": {
+            "observation_count": trajectory.observation_count,
+            "schedule_trajectory": (
+                trajectory.schedule_trajectory
+            ),
+            "progress_direction": (
+                trajectory.progress_direction
+            ),
         },
 
         "early_warning": {
@@ -296,7 +351,7 @@ def generate_unified_intelligence(project):
     }
 
     # =========================================================
-    # 11. FINAL UNIFIED RESPONSE
+    # 13. FINAL UNIFIED RESPONSE
     # =========================================================
 
     return {
@@ -324,6 +379,8 @@ def generate_unified_intelligence(project):
             "timeline": timeline,
             "timeline_prediction": timeline_prediction,
         },
+
+        "historical_trajectory": historical_trajectory,
 
         "early_warning": early_warning,
 

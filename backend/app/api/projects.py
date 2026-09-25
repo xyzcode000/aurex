@@ -493,14 +493,63 @@ def unified_intelligence(
     ),
     db: Session = Depends(get_db),
 ):
+    """
+    Generate consolidated Aurex intelligence for a project.
+
+    Historical project snapshots are loaded from the database
+    and passed explicitly into the Unified Intelligence Engine.
+
+    The Unified Intelligence Engine combines:
+
+        - Current project state
+        - Historical trajectory
+        - Budget intelligence
+        - Timeline intelligence
+        - Risk intelligence
+        - Cost prediction
+        - Timeline prediction
+        - Early warning
+        - Investigation findings
+    """
+
+    # -----------------------------------------------------
+    # 1. Fetch project
+    # -----------------------------------------------------
+
     project = get_required_project(
         db=db,
         project_id=project_id,
     )
 
+    # -----------------------------------------------------
+    # 2. Validate timeline data
+    # -----------------------------------------------------
+
     validate_timeline_data(project)
 
-    return generate_unified_intelligence(project)
+    # -----------------------------------------------------
+    # 3. Load historical snapshots
+    # -----------------------------------------------------
+
+    snapshots = (
+        db.query(ProjectSnapshot)
+        .filter(
+            ProjectSnapshot.project_id == project.id
+        )
+        .order_by(
+            ProjectSnapshot.observation_date.asc()
+        )
+        .all()
+    )
+
+    # -----------------------------------------------------
+    # 4. Generate unified intelligence
+    # -----------------------------------------------------
+
+    return generate_unified_intelligence(
+        project=project,
+        snapshots=snapshots,
+    )
 
 
 # =========================================================

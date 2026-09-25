@@ -1,7 +1,10 @@
+from datetime import date
+
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from app.models.project import Project
+from app.models.project_snapshot import ProjectSnapshot
 from app.schemas.project import ProjectCreate, ProjectUpdate
 
 
@@ -20,7 +23,40 @@ def create_project(
         )
 
         db.add(project)
+
+        # Flush assigns the project ID without committing yet.
+        db.flush()
+
+        # -------------------------------------------------
+        # AUTOMATIC BASELINE SNAPSHOT
+        # -------------------------------------------------
+
+        baseline_snapshot = ProjectSnapshot(
+            project_id=project.id,
+            observation_date=date.today(),
+            snapshot_type="baseline",
+            implementing_agency=project.implementing_agency,
+            location=project.location,
+            status=project.status,
+            approved_budget=project.approved_budget,
+            revised_budget=project.revised_budget,
+            expenditure=project.expenditure,
+            planned_start_date=project.planned_start_date,
+            planned_end_date=project.planned_end_date,
+            actual_start_date=project.actual_start_date,
+            actual_end_date=project.actual_end_date,
+            planned_progress=project.planned_progress,
+            actual_progress=project.actual_progress,
+        )
+
+        db.add(baseline_snapshot)
+
+        # -------------------------------------------------
+        # ATOMIC COMMIT
+        # -------------------------------------------------
+
         db.commit()
+
         db.refresh(project)
 
         return project
