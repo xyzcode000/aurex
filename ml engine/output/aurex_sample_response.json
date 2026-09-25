@@ -1,0 +1,18 @@
+{
+    "project_id": "AUX-SYN-0001",
+    "prediction": {
+        "cost_overrun_percent": NaN,
+        "delay_days": NaN,
+        "risk_level": NaN
+    },
+    "early_warning": {
+        "warning_type": "NONE",
+        "severity": "LOW",
+        "reason": "No configured early-warning threshold was triggered.",
+        "evidence": "No current prediction crossed the configured thresholds."
+    },
+    "explanation": {
+        "contributing_factors": "progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_percent: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal",
+        "factor_count": 7
+    }
+}

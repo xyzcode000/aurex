@@ -1,0 +1,221 @@
+project_id,contributing_factors,factor_count
+AUX-SYN-0001,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_percent: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,7
+AUX-SYN-0002,progress_gap_percent: above normal | milestone_delay_ratio: above normal | milestones_delayed: above normal | cost_revision_percent: above normal | cost_revision_count: above normal | cost_growth_rate_percent_per_year: above normal,6
+AUX-SYN-0003,progress_gap_percent: below normal | schedule_performance_index: above normal,2
+AUX-SYN-0004,No strong contributing factor detected,0
+AUX-SYN-0005,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,6
+AUX-SYN-0006,No strong contributing factor detected,0
+AUX-SYN-0007,No strong contributing factor detected,0
+AUX-SYN-0008,schedule_performance_index: above normal,1
+AUX-SYN-0009,milestone_delay_ratio: above normal | milestones_delayed: above normal | cost_revision_count: above normal,3
+AUX-SYN-0010,progress_gap_percent: below normal | schedule_performance_index: above normal,2
+AUX-SYN-0011,cost_revision_count: above normal,1
+AUX-SYN-0012,number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,4
+AUX-SYN-0013,progress_gap_percent: below normal | schedule_performance_index: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,4
+AUX-SYN-0014,progress_gap_percent: below normal | schedule_performance_index: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,4
+AUX-SYN-0015,No strong contributing factor detected,0
+AUX-SYN-0016,progress_gap_percent: below normal | schedule_performance_index: above normal,2
+AUX-SYN-0017,schedule_performance_index: below normal,1
+AUX-SYN-0018,number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,4
+AUX-SYN-0019,cost_revision_percent: above normal | cost_revision_count: above normal | cost_growth_rate_percent_per_year: above normal,3
+AUX-SYN-0020,No strong contributing factor detected,0
+AUX-SYN-0021,progress_gap_percent: above normal | milestone_delay_ratio: above normal | milestones_delayed: above normal | number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,7
+AUX-SYN-0022,progress_gap_percent: below normal | schedule_performance_index: above normal,2
+AUX-SYN-0023,progress_gap_percent: below normal | schedule_performance_index: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,4
+AUX-SYN-0024,progress_gap_percent: below normal | schedule_performance_index: above normal | cost_revision_count: above normal,3
+AUX-SYN-0025,progress_gap_percent: below normal | schedule_performance_index: above normal | cost_revision_percent: above normal | cost_revision_count: above normal,4
+AUX-SYN-0026,No strong contributing factor detected,0
+AUX-SYN-0027,No strong contributing factor detected,0
+AUX-SYN-0028,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_percent: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,7
+AUX-SYN-0029,No strong contributing factor detected,0
+AUX-SYN-0030,schedule_performance_index: above normal | cost_revision_count: above normal,2
+AUX-SYN-0031,No strong contributing factor detected,0
+AUX-SYN-0032,cost_revision_percent: above normal | cost_revision_count: above normal | cost_growth_rate_percent_per_year: above normal,3
+AUX-SYN-0033,No strong contributing factor detected,0
+AUX-SYN-0034,progress_gap_percent: below normal | schedule_performance_index: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,4
+AUX-SYN-0035,progress_gap_percent: below normal | schedule_performance_index: above normal,2
+AUX-SYN-0036,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,6
+AUX-SYN-0037,No strong contributing factor detected,0
+AUX-SYN-0038,progress_gap_percent: above normal | milestone_delay_ratio: above normal | milestones_delayed: above normal,3
+AUX-SYN-0039,number_of_revisions: above normal | cost_revision_percent: above normal | cost_revision_count: above normal,3
+AUX-SYN-0040,progress_gap_percent: below normal | schedule_performance_index: above normal,2
+AUX-SYN-0041,No strong contributing factor detected,0
+AUX-SYN-0042,schedule_delay_percent: above normal | delay_days_so_far: above normal,2
+AUX-SYN-0043,milestones_delayed: above normal,1
+AUX-SYN-0044,cost_revision_percent: above normal | cost_revision_count: above normal,2
+AUX-SYN-0045,cost_revision_percent: above normal | cost_revision_count: above normal,2
+AUX-SYN-0046,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,6
+AUX-SYN-0047,progress_gap_percent: below normal | schedule_performance_index: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,4
+AUX-SYN-0048,milestones_delayed: above normal,1
+AUX-SYN-0049,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,6
+AUX-SYN-0050,cost_revision_count: above normal,1
+AUX-SYN-0051,progress_gap_percent: above normal | cost_revision_count: above normal,2
+AUX-SYN-0052,cost_revision_count: above normal,1
+AUX-SYN-0053,schedule_performance_index: above normal,1
+AUX-SYN-0054,number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,4
+AUX-SYN-0055,schedule_performance_index: above normal | cost_revision_percent: above normal | cost_revision_count: above normal | cost_growth_rate_percent_per_year: above normal,4
+AUX-SYN-0056,number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,4
+AUX-SYN-0057,progress_gap_percent: below normal | schedule_performance_index: above normal | cost_revision_percent: above normal | cost_revision_count: above normal | cost_growth_rate_percent_per_year: above normal,5
+AUX-SYN-0058,progress_gap_percent: above normal | milestone_delay_ratio: above normal | milestones_delayed: above normal | number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,7
+AUX-SYN-0059,progress_gap_percent: below normal | schedule_performance_index: above normal,2
+AUX-SYN-0060,cost_revision_count: above normal,1
+AUX-SYN-0061,cost_revision_count: above normal,1
+AUX-SYN-0062,progress_gap_percent: below normal | schedule_performance_index: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,4
+AUX-SYN-0063,No strong contributing factor detected,0
+AUX-SYN-0064,No strong contributing factor detected,0
+AUX-SYN-0065,progress_gap_percent: above normal | milestone_delay_ratio: above normal | milestones_delayed: above normal,3
+AUX-SYN-0066,No strong contributing factor detected,0
+AUX-SYN-0067,cost_revision_percent: above normal | cost_revision_count: above normal | cost_growth_rate_percent_per_year: above normal,3
+AUX-SYN-0068,progress_gap_percent: below normal | schedule_performance_index: above normal,2
+AUX-SYN-0069,progress_gap_percent: below normal | schedule_performance_index: above normal,2
+AUX-SYN-0070,progress_gap_percent: below normal | schedule_performance_index: above normal | cost_revision_percent: above normal | cost_revision_count: above normal,4
+AUX-SYN-0071,cost_revision_count: above normal,1
+AUX-SYN-0072,No strong contributing factor detected,0
+AUX-SYN-0073,progress_gap_percent: above normal | milestone_delay_ratio: above normal | milestones_delayed: above normal | number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,7
+AUX-SYN-0074,progress_gap_percent: above normal | milestone_delay_ratio: above normal | milestones_delayed: above normal,3
+AUX-SYN-0075,progress_gap_percent: below normal | schedule_performance_index: above normal,2
+AUX-SYN-0076,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_percent: above normal | cost_revision_count: above normal,5
+AUX-SYN-0077,cost_revision_count: above normal,1
+AUX-SYN-0078,cost_revision_count: above normal,1
+AUX-SYN-0079,No strong contributing factor detected,0
+AUX-SYN-0080,schedule_delay_percent: above normal | delay_days_so_far: above normal,2
+AUX-SYN-0081,No strong contributing factor detected,0
+AUX-SYN-0082,No strong contributing factor detected,0
+AUX-SYN-0083,progress_gap_percent: below normal | schedule_performance_index: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,4
+AUX-SYN-0084,progress_gap_percent: below normal | schedule_performance_index: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,4
+AUX-SYN-0085,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,6
+AUX-SYN-0086,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,6
+AUX-SYN-0087,progress_gap_percent: below normal | schedule_performance_index: above normal | cost_revision_count: above normal,3
+AUX-SYN-0088,progress_gap_percent: above normal | milestone_delay_ratio: above normal | milestones_delayed: above normal | cost_revision_count: above normal,4
+AUX-SYN-0089,number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,4
+AUX-SYN-0090,number_of_revisions: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,3
+AUX-SYN-0091,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_percent: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,7
+AUX-SYN-0092,schedule_delay_percent: above normal | delay_days_so_far: above normal,2
+AUX-SYN-0093,cost_revision_count: above normal,1
+AUX-SYN-0094,progress_gap_percent: above normal | milestone_delay_ratio: above normal | milestones_delayed: above normal,3
+AUX-SYN-0095,progress_gap_percent: below normal | schedule_performance_index: above normal,2
+AUX-SYN-0096,No strong contributing factor detected,0
+AUX-SYN-0097,schedule_delay_percent: above normal | delay_days_so_far: above normal,2
+AUX-SYN-0098,number_of_revisions: above normal | cost_revision_percent: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,5
+AUX-SYN-0099,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_percent: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,7
+AUX-SYN-0100,schedule_delay_percent: above normal | delay_days_so_far: above normal,2
+AUX-SYN-0101,number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,4
+AUX-SYN-0102,No strong contributing factor detected,0
+AUX-SYN-0103,No strong contributing factor detected,0
+AUX-SYN-0104,progress_gap_percent: below normal | schedule_performance_index: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,4
+AUX-SYN-0105,number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,4
+AUX-SYN-0106,cost_revision_percent: above normal | cost_revision_count: above normal,2
+AUX-SYN-0107,milestones_delayed: above normal | cost_revision_count: above normal,2
+AUX-SYN-0108,progress_gap_percent: below normal | schedule_performance_index: above normal,2
+AUX-SYN-0109,progress_gap_percent: below normal | schedule_performance_index: above normal | cost_revision_count: above normal,3
+AUX-SYN-0110,number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,4
+AUX-SYN-0111,schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_percent: above normal | cost_revision_count: above normal,4
+AUX-SYN-0112,schedule_performance_index: below normal,1
+AUX-SYN-0113,progress_gap_percent: above normal | milestone_delay_ratio: above normal | milestones_delayed: above normal,3
+AUX-SYN-0114,number_of_revisions: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,3
+AUX-SYN-0115,progress_gap_percent: above normal | milestone_delay_ratio: above normal | milestones_delayed: above normal,3
+AUX-SYN-0116,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_percent: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | cost_growth_rate_percent_per_year: above normal | delay_days_so_far: above normal,8
+AUX-SYN-0117,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_count: above normal,4
+AUX-SYN-0118,progress_gap_percent: below normal | schedule_performance_index: above normal | cost_revision_percent: above normal | cost_revision_count: above normal,4
+AUX-SYN-0119,progress_gap_percent: below normal | schedule_performance_index: above normal | cost_revision_count: above normal,3
+AUX-SYN-0120,No strong contributing factor detected,0
+AUX-SYN-0121,number_of_revisions: above normal | cost_revision_count: above normal,2
+AUX-SYN-0122,progress_gap_percent: above normal | milestone_delay_ratio: above normal | milestones_delayed: above normal | cost_revision_percent: above normal | cost_revision_count: above normal | cost_growth_rate_percent_per_year: above normal,6
+AUX-SYN-0123,milestones_delayed: above normal,1
+AUX-SYN-0124,number_of_revisions: above normal | cost_revision_percent: above normal | cost_revision_count: above normal | cost_growth_rate_percent_per_year: above normal | delay_days_so_far: above normal,5
+AUX-SYN-0125,No strong contributing factor detected,0
+AUX-SYN-0126,progress_gap_percent: below normal | schedule_performance_index: above normal,2
+AUX-SYN-0127,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,6
+AUX-SYN-0128,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal,5
+AUX-SYN-0129,progress_gap_percent: below normal | schedule_performance_index: above normal,2
+AUX-SYN-0130,No strong contributing factor detected,0
+AUX-SYN-0131,progress_gap_percent: below normal | schedule_performance_index: above normal | cost_revision_percent: above normal | cost_revision_count: above normal,4
+AUX-SYN-0132,progress_gap_percent: below normal | schedule_performance_index: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,4
+AUX-SYN-0133,number_of_revisions: above normal | cost_revision_percent: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,5
+AUX-SYN-0134,progress_gap_percent: above normal | milestones_delayed: above normal,2
+AUX-SYN-0135,number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,4
+AUX-SYN-0136,schedule_performance_index: below normal,1
+AUX-SYN-0137,milestones_delayed: above normal,1
+AUX-SYN-0138,progress_gap_percent: below normal | schedule_performance_index: above normal,2
+AUX-SYN-0139,cost_revision_count: above normal,1
+AUX-SYN-0140,No strong contributing factor detected,0
+AUX-SYN-0141,No strong contributing factor detected,0
+AUX-SYN-0142,number_of_revisions: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,3
+AUX-SYN-0143,progress_gap_percent: below normal | schedule_performance_index: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,4
+AUX-SYN-0144,schedule_performance_index: above normal | cost_revision_percent: above normal | cost_revision_count: above normal,3
+AUX-SYN-0145,cost_revision_percent: above normal | cost_revision_count: above normal | cost_growth_rate_percent_per_year: above normal,3
+AUX-SYN-0146,number_of_revisions: above normal | cost_revision_percent: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | cost_growth_rate_percent_per_year: above normal | delay_days_so_far: above normal,6
+AUX-SYN-0147,number_of_revisions: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,3
+AUX-SYN-0148,progress_gap_percent: above normal,1
+AUX-SYN-0149,progress_gap_percent: below normal | schedule_performance_index: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,4
+AUX-SYN-0150,No strong contributing factor detected,0
+AUX-SYN-0151,No strong contributing factor detected,0
+AUX-SYN-0152,progress_gap_percent: below normal | schedule_performance_index: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,4
+AUX-SYN-0153,cost_revision_percent: above normal | cost_revision_count: above normal,2
+AUX-SYN-0154,cost_revision_percent: above normal | cost_revision_count: above normal | cost_growth_rate_percent_per_year: above normal,3
+AUX-SYN-0155,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,6
+AUX-SYN-0156,schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,5
+AUX-SYN-0157,progress_gap_percent: below normal | schedule_performance_index: above normal,2
+AUX-SYN-0158,progress_gap_percent: below normal | schedule_performance_index: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,4
+AUX-SYN-0159,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_percent: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | cost_growth_rate_percent_per_year: above normal | delay_days_so_far: above normal,8
+AUX-SYN-0160,progress_gap_percent: below normal | schedule_performance_index: above normal | cost_revision_percent: above normal | cost_revision_count: above normal,4
+AUX-SYN-0161,schedule_performance_index: above normal,1
+AUX-SYN-0162,milestones_delayed: above normal | number_of_revisions: above normal | cost_revision_count: above normal,3
+AUX-SYN-0163,progress_gap_percent: above normal | milestone_delay_ratio: above normal | milestones_delayed: above normal | number_of_revisions: above normal | cost_revision_count: above normal,5
+AUX-SYN-0164,No strong contributing factor detected,0
+AUX-SYN-0165,schedule_delay_percent: above normal | delay_days_so_far: above normal,2
+AUX-SYN-0166,cost_revision_percent: above normal | cost_revision_count: above normal | cost_growth_rate_percent_per_year: above normal,3
+AUX-SYN-0167,progress_gap_percent: above normal | milestones_delayed: above normal | number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,6
+AUX-SYN-0168,No strong contributing factor detected,0
+AUX-SYN-0169,schedule_performance_index: above normal | cost_revision_count: above normal,2
+AUX-SYN-0170,cost_revision_count: above normal,1
+AUX-SYN-0171,No strong contributing factor detected,0
+AUX-SYN-0172,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_percent: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,7
+AUX-SYN-0173,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_percent: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,7
+AUX-SYN-0174,progress_gap_percent: below normal | schedule_performance_index: above normal,2
+AUX-SYN-0175,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,6
+AUX-SYN-0176,No strong contributing factor detected,0
+AUX-SYN-0177,cost_revision_percent: above normal | cost_revision_count: above normal | cost_growth_rate_percent_per_year: above normal,3
+AUX-SYN-0178,progress_gap_percent: below normal | schedule_performance_index: above normal | delay_days_so_far: above normal,3
+AUX-SYN-0179,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,6
+AUX-SYN-0180,progress_gap_percent: above normal | milestone_delay_ratio: above normal | milestones_delayed: above normal | schedule_performance_index: below normal,4
+AUX-SYN-0181,progress_gap_percent: below normal | schedule_performance_index: above normal | cost_revision_count: above normal,3
+AUX-SYN-0182,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,6
+AUX-SYN-0183,cost_revision_percent: above normal | cost_revision_count: above normal | cost_growth_rate_percent_per_year: above normal,3
+AUX-SYN-0184,schedule_delay_percent: above normal,1
+AUX-SYN-0185,progress_gap_percent: below normal | schedule_performance_index: above normal | cost_revision_count: above normal,3
+AUX-SYN-0186,number_of_revisions: above normal | cost_revision_percent: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,5
+AUX-SYN-0187,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,6
+AUX-SYN-0188,progress_gap_percent: below normal | schedule_performance_index: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,4
+AUX-SYN-0189,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,6
+AUX-SYN-0190,No strong contributing factor detected,0
+AUX-SYN-0191,number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,4
+AUX-SYN-0192,number_of_revisions: above normal | cost_revision_count: above normal,2
+AUX-SYN-0193,progress_gap_percent: below normal | schedule_performance_index: above normal | cost_revision_count: above normal | cost_growth_rate_percent_per_year: above normal,4
+AUX-SYN-0194,No strong contributing factor detected,0
+AUX-SYN-0195,No strong contributing factor detected,0
+AUX-SYN-0196,progress_gap_percent: below normal | schedule_performance_index: above normal | cost_revision_count: above normal,3
+AUX-SYN-0197,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,6
+AUX-SYN-0198,No strong contributing factor detected,0
+AUX-SYN-0199,progress_gap_percent: above normal,1
+AUX-SYN-0200,progress_gap_percent: below normal | schedule_performance_index: above normal,2
+AUX-SYN-0201,No strong contributing factor detected,0
+AUX-SYN-0202,progress_gap_percent: below normal | schedule_performance_index: above normal | cost_revision_count: above normal,3
+AUX-SYN-0203,cost_revision_percent: above normal | cost_revision_count: above normal | cost_growth_rate_percent_per_year: above normal,3
+AUX-SYN-0204,progress_gap_percent: below normal | schedule_performance_index: above normal,2
+AUX-SYN-0205,progress_gap_percent: below normal | schedule_performance_index: above normal,2
+AUX-SYN-0206,progress_gap_percent: above normal | number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,5
+AUX-SYN-0207,cost_revision_count: above normal,1
+AUX-SYN-0208,cost_revision_count: above normal,1
+AUX-SYN-0209,number_of_revisions: above normal | cost_revision_count: above normal,2
+AUX-SYN-0210,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_percent: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,7
+AUX-SYN-0211,progress_gap_percent: below normal | schedule_performance_index: above normal | delay_days_so_far: above normal,3
+AUX-SYN-0212,progress_gap_percent: above normal | cost_revision_count: above normal,2
+AUX-SYN-0213,progress_gap_percent: below normal | schedule_performance_index: above normal,2
+AUX-SYN-0214,progress_gap_percent: below normal | schedule_performance_index: above normal | cost_revision_count: above normal,3
+AUX-SYN-0215,cost_revision_count: above normal,1
+AUX-SYN-0216,progress_gap_percent: below normal | schedule_performance_index: above normal | number_of_revisions: above normal | cost_revision_count: above normal | schedule_delay_percent: above normal | delay_days_so_far: above normal,6
+AUX-SYN-0217,milestones_delayed: above normal | number_of_revisions: above normal | cost_revision_count: above normal,3
+AUX-SYN-0218,cost_revision_percent: above normal | cost_revision_count: above normal | cost_growth_rate_percent_per_year: above normal,3
+AUX-SYN-0219,No strong contributing factor detected,0
+AUX-SYN-0220,progress_gap_percent: above normal | milestone_delay_ratio: above normal | milestones_delayed: above normal,3
