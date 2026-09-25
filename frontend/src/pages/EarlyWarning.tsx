@@ -32,6 +32,14 @@ function EarlyWarning() {
       message: "Project progress is below the expected level.",
       evidence: "Reported progress is below the expected project trajectory.",
     },
+    {
+  title: "Schedule Monitoring Warning",
+  severity: "MEDIUM",
+  project: "River Bridge Project",
+  projectId: "AUREX-004",
+  message: "Project timeline requires continued monitoring.",
+  evidence: "Current project timeline is slightly above the planned baseline.",
+},
   ];
   const selectedWarning = warnings.find(
   (warning) => warning.projectId === activeProject.project_id

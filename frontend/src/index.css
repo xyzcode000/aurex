@@ -1,19 +1,28 @@
 :root {
-  font-family:
-    Inter,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
+  --aurex-bg: #070A0F;
+  --aurex-surface: #0C1118;
+  --aurex-surface-2: #111821;
 
-  color: #f8fafc;
-  background: #050816;
+  --aurex-amber: #F4B740;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --aurex-text: #F2F5F7;
+  --aurex-text-secondary: #8B98A8;
+
+  --aurex-red: #E55353;
+  --aurex-orange: #F28C28;
+  --aurex-green: #4CAF7D;
+
+  --aurex-border: rgba(255, 255, 255, 0.08);
+
+  --aurex-radius-sm: 6px;
+  --aurex-radius-md: 10px;
+  --aurex-radius-lg: 14px;
+
+  --aurex-space-1: 8px;
+  --aurex-space-2: 16px;
+  --aurex-space-3: 24px;
+  --aurex-space-4: 32px;
+  --aurex-space-5: 40px;
 }
 
 * {
@@ -26,9 +35,9 @@ html {
 
 body {
   margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-  background: #050816;
+  background: var(--aurex-bg);
+  color: var(--aurex-text);
+  font-family: Inter, Arial, sans-serif;
 }
 
 button,
@@ -46,657 +55,137 @@ a {
   color: inherit;
   text-decoration: none;
 }
+/* ================================
+   AUREX SIDE RAIL
+================================ */
 
-/* ============================= */
-/* RISK CENTER */
-/* ============================= */
-
-.risk-page {
-  position: relative;
-  min-height: 100vh;
-  overflow-x: hidden;
-  background:
-    radial-gradient(
-      circle at 8% 10%,
-      rgba(37, 99, 235, 0.32),
-      transparent 30%
-    ),
-    radial-gradient(
-      circle at 92% 18%,
-      rgba(124, 58, 237, 0.32),
-      transparent 30%
-    ),
-    radial-gradient(
-      circle at 50% 100%,
-      rgba(30, 64, 175, 0.18),
-      transparent 35%
-    ),
-    linear-gradient(
-      135deg,
-      #07163f 0%,
-      #08143a 35%,
-      #090c2c 68%,
-      #18075a 100%
-    );
+.aurex-side-rail {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 240px;
+  height: 100vh;
+  padding: 24px 16px;
+  background: var(--aurex-surface);
+  border-right: 1px solid var(--aurex-border);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
 }
 
-/* Extra glow */
-
-.background-glow {
-  position: absolute;
-  width: 420px;
-  height: 420px;
-  border-radius: 50%;
-  filter: blur(100px);
-  pointer-events: none;
-  opacity: 0.25;
-}
-
-.glow-blue {
-  top: 120px;
-  left: -180px;
-  background: #2563eb;
-}
-
-.glow-purple {
-  bottom: -150px;
-  right: -120px;
-  background: #7c3aed;
-}
-
-/* Header */
-
-.risk-header {
-  position: relative;
-  z-index: 5;
-
-  height: 72px;
-  padding: 0 5%;
-
+.aurex-brand {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-
-  background: rgba(4, 10, 32, 0.35);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  gap: 12px;
+  padding: 8px 10px 28px;
+  border-bottom: 1px solid var(--aurex-border);
 }
 
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-
-  font-size: 25px;
-  font-weight: 750;
-  color: #ffffff;
-}
-
-.brand-logo {
-  width: 38px;
-  height: 38px;
-
+.aurex-brand-mark {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--aurex-amber);
+  color: var(--aurex-amber);
   display: flex;
   align-items: center;
   justify-content: center;
-
-  border-radius: 10px;
-
-  font-size: 21px;
-  font-weight: 800;
-
-  background: linear-gradient(135deg, #2563eb, #7c3aed);
-
-  box-shadow:
-    0 0 20px rgba(79, 70, 229, 0.5),
-    inset 0 0 10px rgba(255, 255, 255, 0.15);
-}
-
-.header-nav {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.header-nav button {
-  border: none;
-  background: transparent;
-  color: #aeb9d5;
-
-  padding: 11px 18px;
-  border-radius: 22px;
-
-  transition: all 0.25s ease;
-}
-
-.header-nav button:hover {
-  color: white;
-  background: rgba(255, 255, 255, 0.07);
-}
-
-.header-nav .active-nav {
-  color: white;
-  background: rgba(124, 58, 237, 0.3);
-  box-shadow: 0 0 20px rgba(124, 58, 237, 0.15);
-}
-
-/* Main */
-
-.risk-main {
-  position: relative;
-  z-index: 2;
-
-  width: min(1390px, 92%);
-  margin: 0 auto;
-
-  padding: 38px 0 55px;
-}
-
-/* Hero */
-
-.risk-hero {
-  text-align: center;
-  padding: 10px 0 30px;
-}
-
-.hero-icon {
-  width: 52px;
-  height: 52px;
-
-  margin: 0 auto 15px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  font-size: 25px;
-
-  background: rgba(37, 99, 235, 0.2);
-  border: 1px solid rgba(99, 102, 241, 0.5);
-
-  box-shadow:
-    0 0 25px rgba(79, 70, 229, 0.4),
-    inset 0 0 20px rgba(255, 255, 255, 0.05);
-}
-
-.risk-hero h1 {
-  margin: 0;
-
-  font-size: clamp(38px, 4vw, 54px);
-  line-height: 1.1;
-
-  font-weight: 800;
-  letter-spacing: -1.5px;
-
-  color: #ffffff;
-}
-
-.risk-hero h1 span {
-  background: linear-gradient(
-    90deg,
-    #38bdf8,
-    #8b5cf6,
-    #d946ef
-  );
-
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.risk-level-badge {
-  width: fit-content;
-
-  margin: 18px auto 10px;
-
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  padding: 10px 20px;
-
-  border-radius: 30px;
-
-  color: #ffffff;
-  font-size: 16px;
   font-weight: 700;
-
-  background: linear-gradient(
-    90deg,
-    rgba(244, 63, 94, 0.3),
-    rgba(190, 24, 93, 0.3)
-  );
-
-  border: 1px solid rgba(244, 63, 94, 0.55);
-
-  box-shadow:
-    0 0 25px rgba(244, 63, 94, 0.2),
-    inset 0 0 20px rgba(255, 255, 255, 0.04);
 }
 
-.risk-dot {
-  width: 24px;
-  height: 24px;
+.aurex-brand-name {
+  color: var(--aurex-text);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
 
+.aurex-brand-subtitle {
+  margin-top: 2px;
+  color: var(--aurex-text-secondary);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+}
+
+.aurex-navigation {
   display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background: rgba(255, 255, 255, 0.2);
-
-  color: white;
-}
-
-.project-id {
-  margin: 0;
-
-  color: #aab6d4;
-  font-size: 14px;
-}
-
-/* Risk cards */
-
-.risk-grid {
-  display: grid;
-
-  grid-template-columns: repeat(5, 1fr);
-
-  gap: 18px;
-
-  margin-top: 8px;
-}
-
-/* Dashboard */
-
-.dashboard-grid {
-  display: grid;
-
-  grid-template-columns: 1.7fr 1fr;
-
-  gap: 20px;
-
+  flex-direction: column;
+  gap: 4px;
   margin-top: 24px;
 }
 
-.glass-panel {
-  min-width: 0;
-
-  border-radius: 18px;
-
-  padding: 22px;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.075),
-      rgba(255, 255, 255, 0.025)
-    );
-
-  border: 1px solid rgba(110, 140, 255, 0.25);
-
-  box-shadow:
-    0 20px 45px rgba(0, 0, 0, 0.25),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
-
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-}
-
-.panel-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-
-  gap: 15px;
-}
-
-.panel-header h2 {
-  margin: 0 0 5px;
-
-  color: #f8fafc;
-
-  font-size: 20px;
-}
-
-.panel-header p {
-  margin: 0;
-
-  color: #91a0c3;
-
-  font-size: 13px;
-}
-
-.period-badge {
-  padding: 9px 14px;
-
-  white-space: nowrap;
-
-  border-radius: 20px;
-
-  color: #d8def0;
-
-  font-size: 12px;
-
-  background: rgba(255, 255, 255, 0.055);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.chart-wrapper {
-  width: 100%;
-  height: 320px;
-
-  margin-top: 15px;
-}
-
-.chart-legend {
-  display: flex;
-  gap: 20px;
-
-  margin-top: 8px;
-
-  color: #aeb9d5;
-
-  font-size: 12px;
-}
-
-.legend-dot {
-  display: inline-block;
-
-  width: 9px;
-  height: 9px;
-
-  margin-right: 7px;
-
-  border-radius: 50%;
-}
-
-.legend-dot.purple {
-  background: #8b5cf6;
-  box-shadow: 0 0 8px #8b5cf6;
-}
-
-/* Evidence */
-
-.evidence-list {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 11px;
-
-  margin-top: 18px;
-}
-
-.evidence-item {
+.aurex-nav-item {
   display: flex;
   align-items: center;
-
   gap: 12px;
-
-  padding: 12px;
-
-  border-radius: 14px;
-
-  background: rgba(255, 255, 255, 0.045);
-
-  border: 1px solid rgba(255, 255, 255, 0.055);
-
+  min-height: 44px;
+  padding: 0 12px;
+  border-left: 2px solid transparent;
+  color: var(--aurex-text-secondary);
+  font-size: 13px;
   transition:
-    transform 0.2s ease,
+    color 0.2s ease,
     background 0.2s ease,
     border-color 0.2s ease;
 }
 
-.evidence-item:hover {
-  transform: translateX(4px);
-
-  background: rgba(255, 255, 255, 0.075);
-
-  border-color: rgba(139, 92, 246, 0.25);
+.aurex-nav-item:hover {
+  color: var(--aurex-text);
+  background: rgba(244, 183, 64, 0.05);
 }
 
-.evidence-icon {
-  flex: 0 0 auto;
-
-  width: 40px;
-  height: 40px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  font-weight: 800;
+.aurex-nav-item.active {
+  color: var(--aurex-amber);
+  background: rgba(244, 183, 64, 0.08);
+  border-left-color: var(--aurex-amber);
 }
 
-.evidence-text {
-  min-width: 0;
-
-  display: flex;
-  flex-direction: column;
-
-  gap: 4px;
-}
-
-.evidence-text strong {
-  color: #f1f5f9;
-  font-size: 13px;
-}
-
-.evidence-text span {
-  color: #8f9dbb;
-  font-size: 11px;
-  line-height: 1.4;
-}
-
-.evidence-arrow {
-  margin-left: auto;
-
-  color: #7f8cab;
-
-  font-size: 20px;
-}
-
-/* AI Insight */
-
-.ai-insight {
-  display: flex;
-  align-items: center;
-
-  gap: 16px;
-
-  margin-top: 20px;
-
-  padding: 18px 22px;
-
-  border-radius: 18px;
-
-  background:
-    linear-gradient(
-      90deg,
-      rgba(37, 99, 235, 0.16),
-      rgba(124, 58, 237, 0.22)
-    );
-
-  border: 1px solid rgba(124, 58, 237, 0.45);
-
-  box-shadow:
-    0 20px 45px rgba(0, 0, 0, 0.2),
-    0 0 35px rgba(124, 58, 237, 0.1);
-
-  backdrop-filter: blur(15px);
-}
-
-.ai-icon {
-  flex: 0 0 auto;
-
-  width: 52px;
-  height: 52px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 14px;
-
-  font-size: 24px;
-
-  background: rgba(79, 70, 229, 0.25);
-
-  border: 1px solid rgba(129, 140, 248, 0.4);
-
-  box-shadow: 0 0 25px rgba(79, 70, 229, 0.25);
-}
-
-.ai-content {
-  flex: 1;
-}
-
-.ai-content h3 {
-  margin: 0 0 5px;
-
-  color: white;
-
-  font-size: 17px;
-}
-
-.ai-content p {
-  margin: 0;
-
-  color: #aeb9d5;
-
-  font-size: 12px;
-
-  line-height: 1.6;
-}
-
-.report-button,
-.primary-button {
-  border: none;
-
-  padding: 12px 19px;
-
-  border-radius: 24px;
-
-  color: white;
-
-  font-weight: 700;
-
-  background: linear-gradient(
-    90deg,
-    #3b82f6,
-    #7c3aed
-  );
-
-  box-shadow:
-    0 8px 25px rgba(79, 70, 229, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18);
-
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.report-button:hover,
-.primary-button:hover {
-  transform: translateY(-2px) scale(1.02);
-
-  box-shadow:
-    0 12px 30px rgba(124, 58, 237, 0.45),
-    0 0 20px rgba(99, 102, 241, 0.25);
-}
-
-/* Loading */
-
-.loading-box {
-  min-height: 100vh;
-
-  display: flex;
-  flex-direction: column;
-
-  align-items: center;
-  justify-content: center;
-
+.aurex-nav-icon {
+  width: 18px;
   text-align: center;
-
-  color: white;
+  color: inherit;
+  font-size: 15px;
 }
 
-.loading-box h2 {
-  margin: 18px 0 5px;
+.aurex-system-status {
+  margin-top: auto;
+  padding: 14px 12px;
+  border-top: 1px solid var(--aurex-border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.loading-box p {
-  color: #94a3b8;
-}
-
-.loading-spinner {
-  width: 45px;
-  height: 45px;
-
+.aurex-status-dot {
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-
-  border: 3px solid rgba(255, 255, 255, 0.12);
-
-  border-top-color: #8b5cf6;
-
-  animation: spin 0.8s linear infinite;
-
-  box-shadow: 0 0 20px rgba(139, 92, 246, 0.35);
+  background: var(--aurex-green);
+  box-shadow: 0 0 10px rgba(76, 175, 125, 0.5);
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+.aurex-status-label {
+  color: var(--aurex-text-secondary);
+  font-size: 9px;
+  letter-spacing: 1.5px;
 }
 
-/* Responsive */
+.aurex-status-value {
+  margin-top: 2px;
+  color: var(--aurex-text);
+  font-size: 11px;
+  letter-spacing: 0.8px;
+}
+/* ================================
+   AUREX APPLICATION SHELL
+================================ */
 
-@media (max-width: 1150px) {
-  .risk-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .dashboard-grid {
-    grid-template-columns: 1fr;
-  }
+.aurex-app-shell {
+  min-height: 100vh;
+  background: var(--aurex-bg);
 }
 
-@media (max-width: 700px) {
-  .risk-header {
-    padding: 0 20px;
-  }
-
-  .header-nav button:first-child {
-    display: none;
-  }
-
-  .risk-main {
-    width: 92%;
-  }
-
-  .risk-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .risk-hero h1 {
-    font-size: 38px;
-  }
-
-  .ai-insight {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .report-button {
-    width: 100%;
-  }
+.aurex-main-content {
+  min-height: 100vh;
+  margin-left: 240px;
+  padding: 0;
 }

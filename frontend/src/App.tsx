@@ -21,7 +21,7 @@ import EmptyState from "./pages/EmptyState";
 import ErrorState from "./pages/ErrorState";
 
 import ProtectedRoute from "./components/ProtectedRoute";
-
+import SideRail from "./components/shell/SideRail";
 function App() {
   const [backendStatus, setBackendStatus] = useState("");
 
@@ -65,13 +65,18 @@ function App() {
 
           {/* Risk Center */}
           <Route
-            path="/risk-center"
-            element={
-              <ProtectedRoute>
-                <RiskCenter />
-              </ProtectedRoute>
-            }
-          />
+  path="/risk-center"
+  element={
+    <ProtectedRoute>
+      <div className="aurex-app-shell">
+        <SideRail />
+        <main className="aurex-main-content">
+          <RiskCenter />
+        </main>
+      </div>
+    </ProtectedRoute>
+  }
+/>
 
           {/* Prediction */}
           <Route

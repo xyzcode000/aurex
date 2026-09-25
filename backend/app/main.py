@@ -42,7 +42,7 @@ def get_project_risk(project_id: str):
         "progress_risk": 91,
         "anomaly_score": 63,
         "overall_risk": 84,
-        "risk_level": "HIGH",
+        "risk_level": "MEDIUM" if project_id == "AUREX-002" else "HIGH",
         "evidence": [
             "Project cost is above the planned budget",
             "Schedule is showing delays",
