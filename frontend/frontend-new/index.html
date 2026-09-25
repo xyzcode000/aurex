@@ -1,130 +1,24 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AUREX Dashboard</title>
+  <head>
+    <meta charset="UTF-8" />
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f6f8;
-      color: #1f2937;
-    }
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
 
-    header {
-      background: #111827;
-      color: white;
-      padding: 25px 40px;
-    }
+    <meta
+      name="description"
+      content="AUREX - Project Intelligence & Risk Investigation Engine"
+    />
 
-    header h1 {
-      margin: 0;
-    }
+    <title>AUREX Dashboard</title>
+  </head>
 
-    header p {
-      margin-bottom: 0;
-      color: #cbd5e1;
-    }
+  <body>
+    <div id="root"></div>
 
-    main {
-      padding: 35px 40px;
-    }
-
-    .cards {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin: 20px 0 35px;
-    }
-
-    .card {
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      min-width: 180px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-    }
-
-    .card h3 {
-      margin-top: 0;
-    }
-
-    .number {
-      font-size: 32px;
-      font-weight: bold;
-    }
-
-    .projects {
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-    }
-
-    .project {
-      padding: 15px;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    .status {
-      font-weight: bold;
-    }
-  </style>
-</head>
-
-<body>
-
-  <header>
-    <h1>🚀 AUREX</h1>
-    <p>Project Intelligence & Risk Investigation Engine</p>
-  </header>
-
-  <main>
-
-    <h2>Dashboard</h2>
-
-    <div class="cards">
-
-      <div class="card">
-        <h3>Total Projects</h3>
-        <div class="number">12</div>
-      </div>
-
-      <div class="card">
-        <h3>Active Projects</h3>
-        <div class="number">8</div>
-      </div>
-
-      <div class="card">
-        <h3>High Risk Projects</h3>
-        <div class="number">3</div>
-      </div>
-
-    </div>
-
-    <div class="projects">
-      <h2>Recent Projects</h2>
-
-      <div class="project">
-        <strong>Project A</strong>
-        <span class="status"> — Active</span>
-      </div>
-
-      <div class="project">
-        <strong>Project B</strong>
-        <span class="status"> — Under Review</span>
-      </div>
-
-      <div class="project">
-        <strong>Project C</strong>
-        <span class="status"> — High Risk</span>
-      </div>
-
-    </div>
-
-  </main>
-
-</body>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
