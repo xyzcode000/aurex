@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from uuid import UUID, uuid4
 from typing import TYPE_CHECKING
 
@@ -103,9 +103,24 @@ class Project(Base):
         nullable=False
     )
 
+    approved_cost: Mapped[float | None] = mapped_column(
+        Float,
+        nullable=True
+    )
+
+    revised_cost: Mapped[float | None] = mapped_column(
+        Float,
+        nullable=True
+    )
+
     expenditure: Mapped[float] = mapped_column(
         Float,
         default=0.0
+    )
+
+    planned_progress: Mapped[float | None] = mapped_column(
+        Float,
+        nullable=True
     )
 
     progress_percentage: Mapped[float] = mapped_column(
@@ -135,7 +150,7 @@ class Project(Base):
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime,
-        default=datetime.utcnow
+        default=lambda: datetime.now(timezone.utc)
     )
 
     financial_records: Mapped[list["FinancialRecord"]] = relationship(
@@ -145,13 +160,13 @@ class Project(Base):
     )
 
     progress_records: Mapped[list["ProgressRecord"]] = relationship(
-    "ProgressRecord",
-    back_populates="project",
-    cascade="all, delete-orphan"
+        "ProgressRecord",
+        back_populates="project",
+        cascade="all, delete-orphan"
     )
-    
+
     milestones: Mapped[list["Milestone"]] = relationship(
-    "Milestone",
-    back_populates="project",
-    cascade="all, delete-orphan"
+        "Milestone",
+        back_populates="project",
+        cascade="all, delete-orphan"
     )

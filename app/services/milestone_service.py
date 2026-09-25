@@ -40,7 +40,8 @@ def get_milestones(
         return None
 
     return (
-        db.query(Milestone)
-        .filter(Milestone.project_id == project.id)
-        .all()
-    )
+    db.query(Milestone)
+    .filter(Milestone.project_id == project.id)
+    .order_by(Milestone.planned_date.asc())
+    .all()
+)
